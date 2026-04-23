@@ -4049,8 +4049,9 @@ function renderTypeMenu() {
   var skillParam = new URLSearchParams(window.location.search).get('skill');
   var isSkillLocked = !!skillParam;
 
-  // 「すべて表示」オプション（スキル制限時は非表示）
-  if (!isSkillLocked) {
+  // 「すべて表示」オプション（スキル制限時は非表示、全TYPE解放時のみ表示）
+  var showAll = !isSkillLocked && (typeof isTypeUnlocked !== 'function' || isTypeUnlocked('all') || unlockedSkills.length === Object.keys(CHART_TYPES).length);
+  if (showAll) {
     var isAll = currentChartType === 'all';
     html += '<div onclick="switchChartType(\'all\')" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;cursor:pointer;margin-bottom:4px;transition:all 0.15s;' +
       (isAll ? 'background:rgba(147,187,212,0.15);border:1px solid #93bbd4;' : 'background:transparent;border:1px solid transparent;') +
@@ -4064,8 +4065,15 @@ function renderTypeMenu() {
 
   html += '<div style="height:1px;background:var(--glass-border);margin:4px 0;"></div>';
 
-  // スキル制限時は該当スキルのみ解放、それ以外はロック
-  var unlockedSkills = isSkillLocked ? [skillParam] : Object.keys(CHART_TYPES);
+  // スキル制限: ?skill= パラメータ or 購入済みTYPEで判定
+  var unlockedSkills;
+  if (isSkillLocked) {
+    unlockedSkills = [skillParam];
+  } else if (typeof isTypeUnlocked === 'function') {
+    unlockedSkills = Object.keys(CHART_TYPES).filter(function(k) { return isTypeUnlocked(k); });
+  } else {
+    unlockedSkills = Object.keys(CHART_TYPES);
+  }
 
   Object.entries(CHART_TYPES).forEach(function(entry) {
     var key = entry[0];
@@ -5092,12 +5100,12 @@ init();
 <!-- ============================================ -->
 <!-- CLOUD SYNC INDICATOR -->
 <!-- ============================================ -->
-<div id="cloudSyncBadge" style="display:none;position:fixed;top:12px;right:120px;z-index:9998;background:rgba(26,35,50,0.9);border:1px solid rgba(147,187,212,0.25);border-radius:20px;padding:6px 14px;font-size:11px;color:#93bbd4;font-family:'Source Sans 3',sans-serif;cursor:pointer;" onclick="showUserMenu()">
+<div id="cloudSyncBadge" style="display:none;position:fixed;bottom:16px;right:16px;z-index:9998;background:rgba(26,35,50,0.95);border:1px solid rgba(147,187,212,0.25);border-radius:20px;padding:6px 14px;font-size:11px;color:#93bbd4;font-family:'Source Sans 3',sans-serif;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);" onclick="showUserMenu()">
   <span id="syncIcon">☁️</span> <span id="syncUserName"></span>
 </div>
 
 <!-- User Menu -->
-<div id="userMenu" style="display:none;position:fixed;top:44px;right:120px;z-index:9999;background:#1a2332;border:1px solid rgba(147,187,212,0.25);border-radius:10px;padding:8px;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,0.4);font-family:'Noto Sans JP',sans-serif;">
+<div id="userMenu" style="display:none;position:fixed;bottom:48px;right:16px;z-index:9999;background:#1a2332;border:1px solid rgba(147,187,212,0.25);border-radius:10px;padding:8px;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,0.4);font-family:'Noto Sans JP',sans-serif;">
   <div id="userMenuEmail" style="padding:10px 12px;color:#718096;font-size:12px;border-bottom:1px solid rgba(147,187,212,0.15);margin-bottom:4px;"></div>
   <div id="userMenuTypes" style="padding:8px 12px;font-size:12px;color:#93bbd4;border-bottom:1px solid rgba(147,187,212,0.15);margin-bottom:4px;"></div>
   <div onclick="syncNow()" style="padding:10px 12px;color:#e2e8f0;font-size:13px;cursor:pointer;border-radius:6px;transition:background 0.2s;" onmouseover="this.style.background='rgba(147,187,212,0.1)'" onmouseout="this.style.background='none'">☁️ クラウド同期</div>
@@ -5117,8 +5125,8 @@ init();
   var purchasedTypes = [];
   var _saveDebounce = null;
 
-  // デフォルトで誰でも使えるノードタイプ
-  var FREE_NODE_TYPES = ['mission', 'output', 'manual', 'custom'];
+  // デフォルトで誰でも使えるノードタイプ（TYPE 0 = 基本）
+  var FREE_NODE_TYPES = ['mission', 'output', 'manual', 'custom', '成果物'];
 
   // ---- Auth UI Helpers ----
   window.showLogin = function() {
