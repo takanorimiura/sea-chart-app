@@ -1,9 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function getSupabaseAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+    process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+  );
+}
 
 export async function POST(request: Request) {
   const { code, user_id } = await request.json();
@@ -13,6 +15,8 @@ export async function POST(request: Request) {
   }
 
   // Check code
+  const supabaseAdmin = getSupabaseAdmin();
+
   const { data: codeData, error: codeErr } = await supabaseAdmin
     .from("access_codes")
     .select("*")
