@@ -968,62 +968,66 @@ body.dark-theme .tl-date-cell.weekend {
     </button>
   </div>
   <div class="sidebar-section">
-    <h3 style="display:flex;align-items:center;gap:6px;"><span class="cat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span>テンプレート</h3>
-    <div id="builtinTemplates"></div>
-    <script>
-    function renderBuiltinTemplates() {
-      var aiTemplates = [
-        { key:'book', title:'AI搭載書籍制作フロー', desc:'企画→執筆→校正→デザイン→出版', skill:'ai' },
-        { key:'marketing', title:'マーケティング戦略フロー', desc:'分析→LP→SNS→広告→改善', skill:'ai' },
-        { key:'website', title:'Webサイト構築フロー', desc:'要件定義→開発→SEO→公開', skill:'ai' },
-      ];
-      var loveTemplates = [
-        { key:'love_roadmap', title:'恋愛成就ロードマップ', desc:'自己理解→出会い→交際→成就', skill:'love' },
-        { key:'encounter_flow', title:'出会い→交際フロー', desc:'マッチングから告白まで', skill:'love' },
-        { key:'line_strategy', title:'LINE攻略フロー', desc:'メッセージ戦略の設計', skill:'love' },
-        { key:'self_improvement', title:'自分磨き計画', desc:'秘めフォト×絶対麗度連携', skill:'love' },
-        { key:'himephoto_journey', title:'秘めフォト ステップアップ', desc:'初回→プレミアム→シネマ→ウェディング', skill:'love' },
-        { key:'conflict_resolution', title:'喧嘩修復フロー', desc:'すれ違い→仲直り→関係強化', skill:'love' },
-      ];
-      var readTemplates = [
-        { key:'annual_program', title:'1年間プログラム全体フロー', desc:'覚醒→加速→深化→統合→∞', skill:'read' },
-        { key:'monthly_read8', title:'毎月のREAD 8サイクル', desc:'選書→精読→記録→融合→無地思考', skill:'read' },
-        { key:'infinity_road', title:'∞リーディングに至る道', desc:'習慣化→8要素→閾値突破→創造者', skill:'read' },
-        { key:'aihyper', title:'AIハイパーリーディング', desc:'AI×読書の実践フロー', skill:'read' },
-        { key:'read8', title:'READ 8 プロジェクト', desc:'8冊の戦略的選書→融合', skill:'read' },
-        { key:'readingnote', title:'READING NOTE完全活用', desc:'記録→AI添削→行動→資産化', skill:'read' },
-        { key:'mujithinking', title:'無地思考ワークショップ', desc:'白紙→化学反応→次元上昇', skill:'read' },
-      ];
-      var allTemplates = [].concat(aiTemplates, readTemplates, loveTemplates);
+    <h3 id="tmpl-heading-read" style="display:flex;align-items:center;gap:6px;margin-top:12px;font-size:11px;color:#4A90D9;"><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4A90D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4c2-1 5-1 10 1v16C7 19 4 19 2 20V4z"/><path d="M22 4c-2-1-5-1-10 1v16c5-2 8-2 10-1V4z"/></svg></span> TYPE読 テンプレート</h3>
+    <button class="template-btn" onclick="loadTemplate('annual_program')" style="border-left:3px solid #c9a96e;">
+      <strong>1年間プログラム全体フロー</strong>
+      <span>覚醒→実装→深化→統合→∞インフィニティ</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('monthly_read8')">
+      <strong>毎月のREAD 8サイクル</strong>
+      <span>選書→精読→記録→添削→融合→無地思考→ログ</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('infinity_road')" style="border-left:3px solid #4A8FAD;">
+      <strong>∞リーディングに至る道</strong>
+      <span>習慣化→8要素習得→閾値突破→創造者へ</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('aihyper')">
+      <strong>AIハイパーリーディング</strong>
+      <span>選書→AI調査→精読→AI対話→交配→行動→発信</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('read8')">
+      <strong>READ 8 プロジェクト</strong>
+      <span>8冊の戦略的選書→深読み→エッセンス融合→無地思考</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('read8tree')" style="border-left:3px solid #93bbd4;">
+      <strong>READ 8 読書ツリー（樹形図）</strong>
+      <span>8冊×読書プロセス×交配→エッセンス融合</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('readingnote')">
+      <strong>READING NOTE完全活用</strong>
+      <span>読書→記録→AIフィードバック→行動→ログ</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('mujithinking')">
+      <strong>無地思考ワークショップ</strong>
+      <span>本の核心→A3展開→交配→AIブレスト→行動計画</span>
+    </button>
 
-      var container = document.getElementById('builtinTemplates');
-      container.innerHTML = '';
+    <h3 id="tmpl-heading-love" style="display:flex;align-items:center;gap:6px;margin-top:12px;font-size:11px;color:#E8A0BF;"><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8A0BF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.8A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg></span> TYPE恋 テンプレート</h3>
+    <button class="template-btn" onclick="loadTemplate('love_roadmap')" style="border-left:3px solid #E8A0BF;">
+      <strong>恋愛成就ロードマップ</strong>
+      <span>自己理解→出会い→見極め→対話→成就</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('love_encounter')">
+      <strong>出会い→交際フロー</strong>
+      <span>出会い→LINE→デート→告白→交際開始</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('love_line')">
+      <strong>LINE攻略フロー</strong>
+      <span>タイプ分析→添削→記録→デートに誘う</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('love_ideal')">
+      <strong>理想のパートナー設計</strong>
+      <span>価値観→基準設計→パターン分析→言語化</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('love_conflict')">
+      <strong>喧嘩修復フロー</strong>
+      <span>原因整理→練習→共感→修復→成熟</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('love_selfcare')">
+      <strong>自分磨き計画</strong>
+      <span>自己肯定→外見→麗度→コーチ→自信</span>
+    </button>
 
-      // 解放済みスキルに応じてフィルタリング
-      var visible = allTemplates.filter(function(t) {
-        return UNLOCKED_SKILLS.indexOf(t.skill) !== -1;
-      });
-
-      // スキルごとにグループ化して表示
-      var currentSkill = '';
-      visible.forEach(function(t) {
-        if (t.skill !== currentSkill && UNLOCKED_SKILLS.length > 1) {
-          currentSkill = t.skill;
-          var label = CHART_TYPES[t.skill] ? CHART_TYPES[t.skill].label : t.skill;
-          var heading = document.createElement('div');
-          heading.style.cssText = 'font-size:10px;color:var(--text-secondary);padding:8px 8px 4px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border-top:1px solid var(--glass-border);margin-top:4px;';
-          heading.textContent = 'TYPE ' + label;
-          container.appendChild(heading);
-        }
-        var btn = document.createElement('button');
-        btn.className = 'template-btn';
-        btn.onclick = function(){ loadTemplate(t.key); };
-        btn.innerHTML = '<strong>' + t.title + '</strong><span>' + t.desc + '</span>';
-        container.appendChild(btn);
-      });
-    }
-    renderBuiltinTemplates();
-    </script>
     <div id="customTemplates"></div>
   </div>
   <div class="sidebar-section">
@@ -1276,7 +1280,7 @@ const CHART_TYPES = {
   think: { label: '思', icon: '思', color: '#E67E22', desc: '思考力・分析・意思決定' },
 };
 
-var currentChartType = 'ai';
+var currentChartType = 'read';
 
 // ============================================
 // スキル解放システム（統合モード対応）
@@ -1289,8 +1293,8 @@ var UNLOCKED_SKILLS = [];
 var UNIFIED_MODE = false;
 (function() {
   var params = new URLSearchParams(window.location.search);
-  var skills = params.get('skills');  // 統合モード
-  var skill = params.get('skill');    // 後方互換
+  var skills = params.get('skills');
+  var skill = params.get('skill');
 
   if (skills) {
     UNLOCKED_SKILLS = skills.split(',').filter(function(s) { return CHART_TYPES[s]; });
@@ -1301,42 +1305,38 @@ var UNIFIED_MODE = false;
     SKILL_PREFIX = skill + '_';
     currentChartType = skill;
   } else {
-    // パラメータなし = 全解放
     UNLOCKED_SKILLS = Object.keys(CHART_TYPES);
     UNIFIED_MODE = true;
   }
 })();
 
-// postMessageでスキル動的更新
 window.addEventListener('message', function(event) {
   if (event.data && event.data.type === 'update-skills' && Array.isArray(event.data.skills)) {
     UNLOCKED_SKILLS = event.data.skills.filter(function(s) { return CHART_TYPES[s]; });
     UNIFIED_MODE = true;
     SKILL_PREFIX = '';
-    if (UNLOCKED_SKILLS.length > 0 && !UNLOCKED_SKILLS.includes(currentChartType)) {
+    if (UNLOCKED_SKILLS.length > 0 && UNLOCKED_SKILLS.indexOf(currentChartType) === -1) {
       currentChartType = UNLOCKED_SKILLS[0];
     }
-    // UIを再描画
     if (typeof buildPalette === 'function') buildPalette();
     if (typeof renderTypeMenu === 'function') renderTypeMenu();
+    if (typeof renderBuiltinTemplates === 'function') renderBuiltinTemplates();
   }
 });
 
 function skKey(baseKey) {
-  if (UNIFIED_MODE) return baseKey;  // 統合モード: プレフィックスなし
+  if (UNIFIED_MODE) return baseKey;
   return SKILL_PREFIX + baseKey;
 }
 
 // localStorage移行: プレフィックス付きデータを統合
-(function migrateToUnified() {
+(function() {
   if (!UNIFIED_MODE) return;
   if (localStorage.getItem('sea_chart_unified_migrated')) return;
-
   var prefixes = ['ai_', 'read_', 'love_', 'biz_', 'write_', 'create_', 'health_', 'think_'];
   var existingRaw = localStorage.getItem('ai_mm_projects');
   var existing = {};
   try { if (existingRaw) existing = JSON.parse(existingRaw); } catch(e) {}
-
   var migrated = 0;
   prefixes.forEach(function(prefix) {
     var raw = localStorage.getItem(prefix + 'ai_mm_projects');
@@ -1354,10 +1354,7 @@ function skKey(baseKey) {
       });
     } catch(e) {}
   });
-
-  if (migrated > 0) {
-    localStorage.setItem('ai_mm_projects', JSON.stringify(existing));
-  }
+  if (migrated > 0) localStorage.setItem('ai_mm_projects', JSON.stringify(existing));
   localStorage.setItem('sea_chart_unified_migrated', '1');
 })();
 
@@ -1489,7 +1486,10 @@ NODE_TYPES_BY_CHART.read = {
   rn_action:  { label: 'ACTION NOTE', short: 'AN', color: '#EF4444', desc: '⑤読書→行動計画', category: 'note' },
   rn_muji:    { label: '無地ノート', short: '無N', color: '#E91E8E', desc: '⑥無地思考AIアシスタント', category: 'note' },
 
-  // 📘 ∞リーディング付属AI（書籍付属3種）
+  // 📕 本（読書ツリー用）
+  book:       { label: '本', short: '📕', color: '#93bbd4', desc: '本のタイトルを入力', category: 'book' },
+
+  // 📘 ∞リーディング専用AI（書籍付属3種）
   ir_teaching:  { label: 'ティーチングAI', short: 'T', color: '#4A8FAD', desc: '書籍内容の理解サポート', category: 'ir_ai' },
   ir_feedback:  { label: 'フィードバックAI', short: 'F', color: '#3A7D9B', desc: '読書アウトプット評価', category: 'ir_ai' },
   ir_creative:  { label: 'クリエイティブAI', short: 'C', color: '#5DA3C2', desc: '無地思考のブレスト相手', category: 'ir_ai' },
@@ -1501,9 +1501,6 @@ NODE_TYPES_BY_CHART.read = {
   rn_story:      { label: '∞ストーリー｜物語解析AI', short: 'S', color: '#E74C8B', desc: '小説・戯曲・脚本の物語の構造を詳しく解析。ディープリサーチ機能', category: 'rn_ai' },
   rn_researcher: { label: '∞ディープリサーチャー', short: 'DR', color: '#1B6B93', desc: '本の内容を世界中からリサーチし詳細な「副読本」を作成', category: 'rn_ai' },
   rn_read8navi:  { label: 'READ 8 選書ナビゲーター', short: 'R8', color: '#3A9BD5', desc: '質問に答えて最も読むべき8冊を選書', category: 'rn_ai' },
-
-  // 📕 本（読書ツリー用）
-  book:       { label: '本', short: '📕', color: '#93bbd4', desc: '本のタイトルを入力', category: 'book' },
 
   // 🤖 汎用AI
   claude:     { label: 'Claude',      short: 'Cl', color: '#8B5CF6', desc: '構造分析・長文', category: 'ai' },
@@ -1517,51 +1514,58 @@ NODE_TYPES_BY_CHART.read = {
   custom: { label: 'カスタム', short: '＋', color: '#FFFFFF', desc: '自由入力', category: 'custom' },
 };
 
-// 恋（恋愛）タイプ
+// 恋（恋愛）タイプ — 8コア要素＋LOVE NOTE＋恋愛AI＋行動＋汎用
 NODE_TYPES_BY_CHART.love = {
-  // Mission
-  mission: { label: 'Mission', short: '★', color: '#C4A06A', desc: '最終目標（Before→After）', category: 'mission' },
-  output:  { label: 'Output',  short: '◎', color: '#A8847D', desc: '成果物・達成したい状態', category: 'mission' },
-  // 8コア要素
-  self_love:     { label: '自愛力', short: '自', color: '#E8A0BF', desc: '自己肯定感・愛着スタイル・自分の軸', category: 'elements' },
-  attraction:    { label: '魅了力', short: '魅', color: '#F39C12', desc: '内面・外見・第一印象を磨く', category: 'elements' },
-  encounter:     { label: '出会力', short: '出', color: '#3498DB', desc: '機会創出・打席数を増やす', category: 'elements' },
-  discernment:   { label: '見極力', short: '見', color: '#9B59B6', desc: '絶対基準・脳科学の罠を見抜く', category: 'elements' },
-  communication: { label: '対話力', short: '対', color: '#2ECC71', desc: '会話・LINE・告白の技術', category: 'elements' },
-  empathy:       { label: '共感力', short: '共', color: '#E91E63', desc: '親密さ・愛着を育てる', category: 'elements' },
-  nurturing:     { label: '育成力', short: '育', color: '#27AE60', desc: '信頼・感謝・喧嘩解決', category: 'elements' },
-  endurance:     { label: '持続力', short: '持', color: '#A8847D', desc: '長期設計・結婚・哲学', category: 'elements' },
-  // LOVE NOTE 6タブ
-  note_encounter: { label: '出会いノート', short: '出N', color: '#F5C542', desc: '出会いの記録と分析', category: 'lovenote' },
-  note_date:      { label: 'デートノート', short: 'DN', color: '#E74C8B', desc: 'デートの記録と振り返り', category: 'lovenote' },
-  note_message:   { label: 'メッセージ', short: 'MSG', color: '#06B6D4', desc: 'LINE添削・告白添削', category: 'lovenote' },
-  note_selfcare:  { label: '自分磨き', short: 'SC', color: '#F97316', desc: '絶対麗度・秘めフォト連携', category: 'lovenote' },
-  note_insight:   { label: '気づきノート', short: '!', color: '#7B68EE', desc: 'パターン認識・学び', category: 'lovenote' },
-  note_strategy:  { label: '攻略ノート', short: '攻', color: '#EF4444', desc: '相手タイプ別攻略法', category: 'lovenote' },
-  // 恋愛AI
-  ai_coach:    { label: 'AIラブコーチ', short: 'LC', color: '#E8A0BF', desc: '3モード対話AI', category: 'loveai' },
-  ai_line:     { label: 'LINE添削AI', short: 'LINE', color: '#06B6D4', desc: '温度感分析+3パターン改善', category: 'loveai' },
-  ai_roleplay: { label: 'ロールプレイAI', short: 'RP', color: '#8B5CF6', desc: 'デート想定練習', category: 'loveai' },
-  ai_feedback: { label: 'フィードバックAI', short: 'FB', color: '#3A7D9B', desc: '恋愛日記の分析', category: 'loveai' },
-  ai_diagnosis:{ label: '診断AI', short: 'DX', color: '#E67E22', desc: '8コア要素診断', category: 'loveai' },
-  ai_genome:   { label: 'ゲノムAI', short: 'DNA', color: '#1B6B93', desc: '恋愛DNA解析', category: 'loveai' },
-  // 秘めフォト / 絶対麗度
-  himephoto:     { label: '秘めフォト', short: '秘', color: '#E91E8E', desc: '秘めフォト撮影', category: 'beauty' },
-  himepremium:   { label: '秘めフォトプレミアム', short: '秘P', color: '#D946EF', desc: '秘めフォトプレミアム撮影', category: 'beauty' },
-  himecinema:    { label: '秘めフォトシネマ', short: '秘C', color: '#A855F7', desc: '秘めフォトシネマ撮影', category: 'beauty' },
-  himewedding:   { label: '秘めフォトウェディング', short: '秘W', color: '#EC4899', desc: '秘めフォトウェディング撮影', category: 'beauty' },
-  chumon_photo:  { label: '注文の多い写真館', short: '注', color: '#F472B6', desc: '注文の多い写真館', category: 'beauty' },
-  zettai_reido:  { label: '絶対麗度ラボ', short: '麗', color: '#FB7185', desc: '絶対麗度ACADEMY・ラボ', category: 'beauty' },
-  // 書籍
-  book: { label: '本', short: '📖', color: '#93BBD4', desc: '書籍ノード', category: 'book' },
-  // 汎用AI
-  claude:     { label: 'Claude', short: 'C', color: '#8B5CF6', desc: '構造分析・長文', category: 'generic_ai' },
-  chatgpt:    { label: 'ChatGPT', short: 'G', color: '#10A37F', desc: 'ブレスト・対話', category: 'generic_ai' },
-  gemini:     { label: 'Gemini', short: 'Ge', color: '#4285F4', desc: 'ディープリサーチ', category: 'generic_ai' },
+  // ミッション
+  mission:  { label: 'Mission', short: '★', color: '#C4A06A', desc: '最終目標（Before→After）', category: 'mission' },
+  output:   { label: 'Output',  short: '◎', color: '#A8847D', desc: '成果物・達成したい状態', category: 'mission' },
+
+  // 🌸 恋愛8コア要素
+  self_love:     { label: '自愛力',  short: '自', color: '#E8A0BF', desc: '自己肯定感・愛着スタイル・自分の軸', category: 'elements' },
+  attraction:    { label: '魅了力',  short: '魅', color: '#F39C12', desc: '内面・外見・第一印象を磨く', category: 'elements' },
+  encounter:     { label: '出会力',  short: '出', color: '#3498DB', desc: '機会創出・打席数を増やす', category: 'elements' },
+  discernment:   { label: '見極力',  short: '見', color: '#9B59B6', desc: '絶対基準・脳科学の罠を見抜く', category: 'elements' },
+  communication: { label: '対話力',  short: '対', color: '#2ECC71', desc: '会話・LINE・告白の技術', category: 'elements' },
+  empathy:       { label: '共感力',  short: '共', color: '#E91E63', desc: '親密さ・愛着を育てる', category: 'elements' },
+  nurturing:     { label: '育成力',  short: '育', color: '#27AE60', desc: '信頼・感謝・喧嘩解決', category: 'elements' },
+  endurance:     { label: '持続力',  short: '持', color: '#A8847D', desc: '長期設計・結婚・哲学', category: 'elements' },
+
+  // 📖 LOVE NOTE
+  note_encounter: { label: '出会いノート',   short: '出N', color: '#F5C542', desc: '出会いの記録と分析', category: 'lovenote' },
+  note_date:      { label: 'デートノート',   short: 'DN',  color: '#E74C8B', desc: 'デートの記録と振り返り', category: 'lovenote' },
+  note_message:   { label: 'メッセージ',     short: 'MSG', color: '#06B6D4', desc: 'LINE添削・告白添削', category: 'lovenote' },
+  note_selfcare:  { label: '自分磨き',       short: 'SC',  color: '#F97316', desc: '絶対麗度・秘めフォト連携', category: 'lovenote' },
+  note_insight:   { label: '気づきノート',   short: '💡',  color: '#7B68EE', desc: 'パターン認識・学び', category: 'lovenote' },
+  note_strategy:  { label: '攻略ノート',     short: '攻',  color: '#EF4444', desc: '相手タイプ別攻略法', category: 'lovenote' },
+
+  // 💗 恋愛AI
+  ai_coach:    { label: 'AIラブコーチ',      short: 'LC',   color: '#E8A0BF', desc: '寄り添い・戦略・振り返りの3モード対話', category: 'loveai' },
+  ai_line:     { label: 'LINE添削AI',        short: 'LINE', color: '#06B6D4', desc: '温度感分析+3パターン改善案', category: 'loveai' },
+  ai_roleplay: { label: 'ロールプレイAI',    short: 'RP',   color: '#8B5CF6', desc: 'デート想定練習（6シーン）', category: 'loveai' },
+  ai_feedback: { label: 'フィードバックAI',  short: 'FB',   color: '#3A7D9B', desc: '恋愛日記のAI分析', category: 'loveai' },
+  ai_diagnosis:{ label: '診断AI',            short: 'DX',   color: '#E67E22', desc: '8コア要素診断', category: 'loveai' },
+  ai_genome:   { label: 'ゲノムAI',          short: 'DNA',  color: '#1B6B93', desc: '恋愛DNA解析', category: 'loveai' },
+
+  // 💍 恋愛アクション
+  profile:   { label: 'プロファイリング', short: 'P',  color: '#8B5CF6', desc: '自己分析・16タイプ診断', category: 'action' },
+  matching:  { label: 'マッチング',       short: 'M',  color: '#E91E8E', desc: '出会いの場の設計', category: 'action' },
+  date:      { label: 'デート設計',       short: 'D',  color: '#FF6B35', desc: 'デートプランの策定', category: 'action' },
+  proposal:  { label: '告白',             short: '告', color: '#EF4444', desc: '想いを伝える', category: 'action' },
+  wedding:   { label: '結婚準備',         short: '婚', color: '#F5C542', desc: '結婚に向けた計画', category: 'action' },
+
+  // 📚 書籍
+  book_equation: { label: '恋愛成就の方程式', short: '方', color: '#E8A0BF', desc: '全32章', category: 'book' },
+  book_ultimate: { label: '究極の恋愛大全',   short: '大', color: '#A5476A', desc: '全32章', category: 'book' },
+
+  // 🤖 汎用AI
+  claude:     { label: 'Claude',     short: 'Cl', color: '#8B5CF6', desc: '構造分析・長文', category: 'generic_ai' },
+  chatgpt:    { label: 'ChatGPT',    short: 'GP', color: '#10A37F', desc: 'ブレスト・対話', category: 'generic_ai' },
+  gemini:     { label: 'Gemini',     short: 'Ge', color: '#4285F4', desc: 'ディープリサーチ', category: 'generic_ai' },
   perplexity: { label: 'Perplexity', short: 'Px', color: '#20B8CD', desc: 'AI検索', category: 'generic_ai' },
-  // その他
+
+  // ✋ その他
   manual: { label: '手動作業', short: '手', color: '#6B7280', desc: '人間の作業', category: 'manual' },
-  custom: { label: 'カスタム', short: '＋', color: '#D4A0A0', desc: '自由入力', category: 'custom' },
+  custom: { label: 'カスタム', short: '＋', color: '#FFFFFF', desc: '自由入力', category: 'custom' },
 };
 
 // 創（クリエイティブ）タイプ
@@ -1631,8 +1635,8 @@ function mergeAllNodeTypes() {
       var key = nodeEntry[0];
       var val = nodeEntry[1];
       if (key === 'mission' || key === 'current' || key === 'output' || key === 'manual' || key === 'custom') return;
-      // 読・恋タイプはオリジナルのカテゴリを保持（細分化表示のため）
-      if (chartType === 'read' || chartType === 'love') {
+      // 読タイプはオリジナルのカテゴリを保持（細分化表示のため）
+      if (chartType === 'read') {
         NODE_TYPES[key] = Object.assign({}, val);
       } else {
         var catKey = 'type_' + chartType;
@@ -1686,12 +1690,6 @@ var CATEGORIES = {
   type_create: { label: '創（クリエイティブ）', order: 14, icon: '<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' },
   type_health: { label: '健（ウェルネス）', order: 15, icon: '<svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>' },
   type_think:  { label: '思（思考力）', order: 16, icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' },
-  // 恋タイプ専用カテゴリ
-  elements:   { label: '恋愛8スキル', order: 1, icon: '<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' },
-  lovenote:   { label: 'LOVE NOTE', order: 2, icon: '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' },
-  loveai:     { label: '恋愛AI', order: 3, icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' },
-  beauty:     { label: '秘めフォト / 絶対麗度', order: 4, icon: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M5 21l4-5 3 3 4-5 5 7"/></svg>' },
-  generic_ai: { label: '汎用AI', order: 5, icon: '<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' },
   // 共通
   zz_manual:  { label: '手動作業', order: 97, icon: '<svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>' },
   zz_custom:  { label: 'フリー枠', order: 98, icon: '<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' },
@@ -1712,9 +1710,7 @@ function buildPalette() {
       var isSelectedType = cat === 'type_' + currentChartType;
       // 読タイプの専用カテゴリも表示
       var isReadSub = (currentChartType === 'read' && ['process','note','ir_ai','rn_ai','book','ai'].indexOf(cat) !== -1);
-      // 恋タイプの専用カテゴリも表示
-      var isLoveSub = (currentChartType === 'love' && ['elements','lovenote','loveai','beauty','generic_ai','book'].indexOf(cat) !== -1);
-      if (!isCommon && !isSelectedType && !isReadSub && !isLoveSub) return;
+      if (!isCommon && !isSelectedType && !isReadSub) return;
     }
 
     if (!grouped[cat]) grouped[cat] = [];
@@ -2354,17 +2350,17 @@ function loadProjectData(data) {
 // 複数プロジェクト保存
 // ============================================
 function getProjectList() {
-  try { return JSON.parse(localStorage.getItem(skKey('ai_mm_projects')) || '{}'); } catch(e) { return {}; }
+  try { return JSON.parse(localStorage.getItem('ai_mm_projects') || '{}'); } catch(e) { return {}; }
 }
 
 function saveProjectList(list) {
-  localStorage.setItem(skKey('ai_mm_projects'), JSON.stringify(list));
+  localStorage.setItem('ai_mm_projects', JSON.stringify(list));
 }
 
 function saveProject() {
   var data = getProjectData();
   var name = data.name || 'untitled';
-  var key = skKey('ai_mm_') + name.replace(/[^a-zA-Z0-9\u3040-\u9fff]/g, '_');
+  var key = 'ai_mm_' + name.replace(/[^a-zA-Z0-9\u3040-\u9fff]/g, '_');
 
   // プロジェクトデータを保存
   localStorage.setItem(key, JSON.stringify(data));
@@ -2375,7 +2371,7 @@ function saveProject() {
   saveProjectList(list);
 
   // 後方互換（旧キー）
-  localStorage.setItem(skKey('ai_mission_map'), JSON.stringify(data));
+  localStorage.setItem('ai_mission_map', JSON.stringify(data));
 
   currentProjectKey = key;
   renderMyProjects();
@@ -2388,7 +2384,7 @@ function loadProject() {
 
   if (keys.length === 0) {
     // 旧形式のデータがあればそれを読み込む
-    var raw = localStorage.getItem(skKey('ai_mission_map'));
+    var raw = localStorage.getItem('ai_mission_map');
     if (!raw) { showToast('保存データがありません'); return; }
     try {
       loadProjectData(JSON.parse(raw));
@@ -2505,11 +2501,11 @@ function renderMyProjects() {
 // テンプレート管理
 // ============================================
 function getCustomTemplates() {
-  try { return JSON.parse(localStorage.getItem(skKey('sea_chart_templates')) || '[]'); } catch(e) { return []; }
+  try { return JSON.parse(localStorage.getItem('sea_chart_templates') || '[]'); } catch(e) { return []; }
 }
 
 function saveCustomTemplates(templates) {
-  localStorage.setItem(skKey('sea_chart_templates'), JSON.stringify(templates));
+  localStorage.setItem('sea_chart_templates', JSON.stringify(templates));
 }
 
 function makeTemplate(projectKey, projectName) {
@@ -2705,242 +2701,252 @@ function clearAll() {
 // ============================================
 // Templates
 // ============================================
-// スキル別テーマカラー
-var SKILL_THEMES = {
-  // AI — パープル系
-  ai: {
-    bg: '#F5F3FF', bg2: '#FAF5FF', card: 'rgba(255,255,255,0.7)',
-    canvasBg: '#EDE9FE', canvasDot: 'rgba(124,58,237,0.08)',
-    text: '#2E1065', textSecondary: '#6B5B95', textMuted: '#7C6FA0',
-    goldPrimary: '#7C3AED', goldSecondary: '#5B21B6',
-    glassBg: 'rgba(245,243,255,0.6)', glassBorder: 'rgba(124,58,237,0.15)',
-    accent: '#A78BFA', accentHover: '#8B5CF6',
-  },
-  // 読 — カスタムアズール
-  read: {
-    bg: '#F0F7FC', bg2: '#F5FAFF', card: 'rgba(255,255,255,0.7)',
-    canvasBg: '#E0EFF8', canvasDot: 'rgba(147,187,212,0.12)',
-    text: '#1A3A4A', textSecondary: '#5A7A8A', textMuted: '#6B8A9A',
-    goldPrimary: '#2E7DA8', goldSecondary: '#1B5E7D',
-    glassBg: 'rgba(240,247,252,0.6)', glassBorder: 'rgba(147,187,212,0.2)',
-    accent: '#93BBD4', accentHover: '#7AAEC5',
-  },
-  // 書 — インクブルー
-  write: {
-    bg: '#F0F4F8', bg2: '#F5F8FC', card: 'rgba(255,255,255,0.7)',
-    canvasBg: '#DBEAFE', canvasDot: 'rgba(37,99,235,0.08)',
-    text: '#1A2744', textSecondary: '#4A6280', textMuted: '#5A728A',
-    goldPrimary: '#2563EB', goldSecondary: '#1D4ED8',
-    glassBg: 'rgba(240,244,248,0.6)', glassBorder: 'rgba(37,99,235,0.12)',
-    accent: '#60A5FA', accentHover: '#3B82F6',
-  },
-  // 恋 — ローズピンク
-  love: {
-    bg: '#FDF2F6', bg2: '#FFF5F9', card: 'rgba(255,255,255,0.7)',
-    canvasBg: '#FCE7F3', canvasDot: 'rgba(200,107,138,0.1)',
-    text: '#4A3540', textSecondary: '#8A6B78', textMuted: '#8A6B78',
-    goldPrimary: '#C86B8A', goldSecondary: '#A5476A',
-    glassBg: 'rgba(255,245,249,0.6)', glassBorder: 'rgba(200,107,138,0.15)',
-    accent: '#E8A0BF', accentHover: '#D490AF',
-  },
-  // 稼 — ゴールド / アンバー
-  biz: {
-    bg: '#FFFBF0', bg2: '#FFF8E7', card: 'rgba(255,255,255,0.7)',
-    canvasBg: '#FEF3C7', canvasDot: 'rgba(217,119,6,0.08)',
-    text: '#3D2E1A', textSecondary: '#8A7A5A', textMuted: '#9A8A6A',
-    goldPrimary: '#D97706', goldSecondary: '#B45309',
-    glassBg: 'rgba(255,251,240,0.6)', glassBorder: 'rgba(217,119,6,0.15)',
-    accent: '#FBBF24', accentHover: '#F59E0B',
-  },
-  // 創 — マゼンタ
-  create: {
-    bg: '#FDF2FF', bg2: '#FFF5FF', card: 'rgba(255,255,255,0.7)',
-    canvasBg: '#FAE8FF', canvasDot: 'rgba(192,38,211,0.08)',
-    text: '#3B0764', textSecondary: '#86518B', textMuted: '#9A6B9E',
-    goldPrimary: '#C026D3', goldSecondary: '#A21CAF',
-    glassBg: 'rgba(253,242,255,0.6)', glassBorder: 'rgba(192,38,211,0.12)',
-    accent: '#E879F9', accentHover: '#D946EF',
-  },
-  // 健 — エメラルドグリーン
-  health: {
-    bg: '#F0FDF4', bg2: '#F5FFF8', card: 'rgba(255,255,255,0.7)',
-    canvasBg: '#D1FAE5', canvasDot: 'rgba(5,150,105,0.08)',
-    text: '#14432A', textSecondary: '#4A7A5A', textMuted: '#5A8A6A',
-    goldPrimary: '#059669', goldSecondary: '#047857',
-    glassBg: 'rgba(240,253,244,0.6)', glassBorder: 'rgba(5,150,105,0.15)',
-    accent: '#34D399', accentHover: '#10B981',
-  },
-  // 思 — ディープオレンジ
-  think: {
-    bg: '#FFF7ED', bg2: '#FFFAF0', card: 'rgba(255,255,255,0.7)',
-    canvasBg: '#FFEDD5', canvasDot: 'rgba(234,88,12,0.08)',
-    text: '#431407', textSecondary: '#8A5A3A', textMuted: '#9A6A4A',
-    goldPrimary: '#EA580C', goldSecondary: '#C2410C',
-    glassBg: 'rgba(255,247,237,0.6)', glassBorder: 'rgba(234,88,12,0.12)',
-    accent: '#FB923C', accentHover: '#F97316',
-  },
-};
-
-function applySkillTheme(skill) {
-  var theme = SKILL_THEMES[skill];
-  if (!theme) return;
-  var root = document.documentElement;
-  root.style.setProperty('--bg', theme.bg);
-  root.style.setProperty('--bg-secondary', theme.bg2);
-  root.style.setProperty('--card-bg', theme.card);
-  root.style.setProperty('--text-primary', theme.text);
-  root.style.setProperty('--text-secondary', theme.textSecondary);
-  root.style.setProperty('--text-muted', theme.textMuted);
-  root.style.setProperty('--gold-primary', theme.goldPrimary);
-  root.style.setProperty('--gold-secondary', theme.goldSecondary);
-  root.style.setProperty('--glass-bg', theme.glassBg);
-  root.style.setProperty('--glass-border', theme.glassBorder);
-  root.style.setProperty('--accent', theme.accent);
-  root.style.setProperty('--accent-hover', theme.accentHover);
-  // キャンバス背景をスキルカラーに
-  root.style.setProperty('--bg-primary', theme.canvasBg);
-  root.style.setProperty('--canvas-dot', theme.canvasDot);
-  // ブルー系のハードコード値をスキルカラーで上書き
-  root.style.setProperty('--gold-bright', theme.accent);
-  root.style.setProperty('--node-mission', theme.accent);
-  root.style.setProperty('--node-selected-shadow', '0 0 0 2px ' + theme.goldPrimary + ', 0 8px 32px rgba(0,0,0,0.15)');
-  // ツールバーのロゴ・アイコンをピンクに
-  var logoIcon = document.querySelector('.toolbar .logo-icon');
-  if (logoIcon) logoIcon.style.background = 'linear-gradient(135deg, ' + theme.goldPrimary + ', ' + theme.accent + ')';
-  var logoText = document.querySelector('.toolbar .logo-text');
-  if (logoText) { logoText.style.background = 'linear-gradient(135deg, ' + theme.goldPrimary + ', ' + theme.accent + ')'; logoText.style.webkitBackgroundClip = 'text'; logoText.style.webkitTextFillColor = 'transparent'; }
-  // ツールバーボタンのホバー色
-  var style = document.createElement('style');
-  style.textContent = '.toolbar-btn:hover { color: ' + theme.goldPrimary + ' !important; border-color: ' + theme.goldPrimary + ' !important; } .toolbar-btn.accent { color: ' + theme.goldPrimary + ' !important; border-color: ' + theme.goldPrimary + ' !important; background: rgba(200,107,138,0.1) !important; } .node-palette-icon { border: 1px solid ' + theme.glassBorder + '; } .sidebar-section h3 { color: ' + theme.goldPrimary + '; } .sidebar-section .cat-icon svg { stroke: ' + theme.goldPrimary + '; }';
-  document.head.appendChild(style);
-  // ドットグリッド
-  var dotGrid = document.querySelector('.dot-grid');
-  if (dotGrid) dotGrid.style.backgroundImage = 'radial-gradient(circle,' + theme.glassBorder + ' 1px,transparent 1px)';
-  // ギャップバーのグラデーション
-  var gapFill = document.querySelector('.gap-fill');
-  if (gapFill) gapFill.style.background = 'linear-gradient(90deg, #2ECC71, ' + theme.accent + ')';
-}
-
-// テーマ適用はinit()で実行（DOMロード後に確実に適用するため）
-
 var TEMPLATES = {
-  book: {
-    name: 'AI\u642d\u8f09\u66f8\u7c4d\u5236\u4f5c\u30d5\u30ed\u30fc',
+  aihyper: {
+    name: 'AIハイパーリーディング',
     flow: [
-      { type: 'mission', title: '\u66f8\u7c4d\u30921\u518a\u51fa\u7248\u3059\u308b', desc: '\u6700\u7d42\u76ee\u6a19\uff1aAI\u642d\u8f09DX\u7248\u66f8\u7c4d\u306e\u5b8c\u6210' },
-      { type: 'claude', title: '\u4f01\u753b\u30fb\u69cb\u6210\u8a2d\u8a08', desc: 'Claude Code\u3067\u66f8\u7c4d\u306e\u4f01\u753b\u66f8\u30fb\u76ee\u6b21\u69cb\u6210\u3092\u8a2d\u8a08' },
-      { type: 'claude', title: '\u539f\u7a3f\u57f7\u7b46\uff0832\u7ae0\uff09', desc: 'Claude Code\u3067\u516832\u7ae0\u306e\u539f\u7a3f\u3092\u751f\u6210' },
-      { type: 'gemini', title: '\u6821\u6b63\u30fb\u30d5\u30a1\u30af\u30c8\u30c1\u30a7\u30c3\u30af', desc: 'Gemini\u3067\u6821\u6b63\u30fb\u4e8b\u5b9f\u78ba\u8a8d\u3092\u5b9f\u65bd' },
-      { type: 'midjourney', title: '\u8868\u7d19\u30c7\u30b6\u30a4\u30f3\u751f\u6210', desc: 'Midjourney\u3067\u8907\u6570\u306e\u8868\u7d19\u6848\u3092\u751f\u6210' },
-      { type: 'claude', title: 'AI\u30d5\u30a3\u30fc\u30c9\u30d0\u30c3\u30af\u30b7\u30b9\u30c6\u30e0\u8a2d\u8a08', desc: '\u8aad\u8005\u5411\u3051AI\u6a5f\u80fd\u306e\u8a2d\u8a08\u30fb\u5b9f\u88c5' },
-      { type: 'manual', title: '\u5165\u7a3f\u30fb\u5370\u5237', desc: '\u5370\u5237\u6240\u3078\u306e\u5165\u7a3f\u30fb\u6821\u6b63\u5237\u308a\u78ba\u8a8d' },
-      { type: 'output', title: 'AI\u642d\u8f09\u66f8\u7c4d\u5b8c\u6210', desc: 'AI\u642d\u8f09DX\u7248\u66f8\u7c4d\u306e\u5b8c\u6210\u30fb\u767a\u58f2' },
+      { type: 'current', title: '1冊の本がある', desc: 'まだ読んでいない、または表面的にしか読めていない1冊' },
+      { type: 'select', title: '選書の意図を明確化', desc: 'なぜこの本を読むのか？目的を言語化する' },
+      { type: 'perplexity', title: '著者・背景調査', desc: '著者の他の著作、時代背景、評価をAI検索で把握' },
+      { type: 'extract', title: '精読＋抽出', desc: '核心メッセージ（コード）を抽出しながら精読' },
+      { type: 'claude', title: 'AI対話で深掘り', desc: 'Claudeと対話しながら著者の意図・論理構造を分析' },
+      { type: 'chatgpt', title: 'ソクラテス式問答', desc: 'ChatGPTに問いを投げてもらい、理解を深化' },
+      { type: 'crossbreed', title: '交配', desc: '他の本・分野の知識と掛け合わせて新しいアイデアを生む' },
+      { type: 'rn_action', title: 'ACTION NOTE', desc: '読書→行動計画を作成。「いつ・何を・どうやって」' },
+      { type: 'diffuse', title: '書評アウトプット', desc: '書評をSNS・ブログ・読書会で発信' },
+      { type: 'notebooklm', title: 'NotebookLMでポッドキャスト化', desc: '読書メモをNotebookLMに入れて音声まとめを生成' },
+      { type: 'mission', title: '読書体験が完全に資産化された', desc: '脳内ストック＋デジタル記録＋行動変容の3点セットが完成' },
     ]
   },
-  marketing: {
-    name: '\u30de\u30fc\u30b1\u30c6\u30a3\u30f3\u30b0\u6226\u7565\u30d5\u30ed\u30fc',
+  read8: {
+    name: 'READ 8 プロジェクト',
     flow: [
-      { type: 'mission', title: '\u6708\u55461000\u4e07\u5186\u9054\u6210', desc: '\u58f2\u4e0a\u76ee\u6a19\u306e\u9054\u6210' },
-      { type: 'claude', title: '\u30da\u30eb\u30bd\u30ca\u5206\u6790', desc: '\u30bf\u30fc\u30b2\u30c3\u30c8\u9867\u5ba2\u306e\u8a73\u7d30\u5206\u6790' },
-      { type: 'claude', title: '\u30b3\u30d4\u30fc\u30e9\u30a4\u30c6\u30a3\u30f3\u30b0', desc: 'LP\u30fb\u5e83\u544a\u306e\u30b3\u30d4\u30fc\u4f5c\u6210' },
-      { type: 'midjourney', title: '\u30d0\u30ca\u30fc\u753b\u50cf\u751f\u6210', desc: '\u5e83\u544a\u30fbSNS\u7528\u306e\u30d3\u30b8\u30e5\u30a2\u30eb\u7d20\u6750' },
-      { type: 'manus', title: 'LP\u81ea\u52d5\u69cb\u7bc9', desc: 'Manus\u3067\u30e9\u30f3\u30c7\u30a3\u30f3\u30b0\u30da\u30fc\u30b8\u3092\u69cb\u7bc9' },
-      { type: 'chatgpt', title: 'SNS\u6295\u7a3f\u6587\u751f\u6210\uff0830\u65e5\u5206\uff09', desc: '1\u30f6\u6708\u5206\u306eSNS\u30b3\u30f3\u30c6\u30f3\u30c4\u3092\u4e00\u62ec\u751f\u6210' },
-      { type: 'manual', title: '\u5e83\u544a\u51fa\u7a3f\u30fb\u904b\u7528', desc: 'Meta/Google\u5e83\u544a\u306e\u51fa\u7a3f\u30fb\u904b\u7528\u7ba1\u7406' },
-      { type: 'claude', title: '\u30c7\u30fc\u30bf\u5206\u6790\u30fb\u6539\u5584\u63d0\u6848', desc: '\u5e83\u544a\u30c7\u30fc\u30bf\u3092\u5206\u6790\u3057PDCA\u3092\u56de\u3059' },
-      { type: 'output', title: 'ROAS 500%\u9054\u6210', desc: '\u5e83\u544a\u8cbb\u7528\u5bfe\u52b9\u679c500%\u3092\u9054\u6210' },
+      { type: 'current', title: '何を読めばいいかわからない', desc: '読書はしたいが、選書に迷い、読みっぱなしになっている' },
+      { type: 'select', title: '8冊の選書設計', desc: 'ジャンル横断×難易度バランス×交配可能性を設計' },
+      { type: 'gemini', title: 'Deep Researchで分野俯瞰', desc: 'Geminiで選書候補の分野全体を俯瞰調査' },
+      { type: 'book', title: '1冊目：古典（Center）', desc: '知識のドーナツの穴＝深淵なる知恵にアクセス' },
+      { type: 'book', title: '2冊目：専門書', desc: '自分の専門分野の最新知見' },
+      { type: 'book', title: '3-4冊目：異分野', desc: '普段読まないジャンルで交配の種を撒く' },
+      { type: 'book', title: '5-8冊目：実践＋教養', desc: '行動変容につながる本＋長期的教養' },
+      { type: 'rn_essence', title: 'READ 8 ESSENCE', desc: '8冊のエッセンスを融合。交配マトリクスを作成' },
+      { type: 'muji', title: '無地思考', desc: 'A3の無地の紙で8冊の化学反応を最大化' },
+      { type: 'mission', title: '8冊が脳内で有機的に結合した', desc: '知識が孤立せず、化学反応が日常的に起きる状態' },
     ]
   },
-  website: {
-    name: 'Web\u30b5\u30a4\u30c8\u69cb\u7bc9\u30d5\u30ed\u30fc',
+  readingnote: {
+    name: 'READING NOTE完全活用フロー',
     flow: [
-      { type: 'mission', title: '\u4f01\u696dHP\u3092\u69cb\u7bc9', desc: '\u30b3\u30fc\u30dd\u30ec\u30fc\u30c8\u30b5\u30a4\u30c8\u306e\u65b0\u898f\u69cb\u7bc9' },
-      { type: 'claude', title: '\u8981\u4ef6\u5b9a\u7fa9\u30fb\u8a2d\u8a08\u66f8\u4f5c\u6210', desc: '\u30b5\u30a4\u30c8\u69cb\u6210\u30fb\u4ed5\u69d8\u66f8\u3092\u4f5c\u6210' },
-      { type: 'manus', title: '\u30c7\u30b6\u30a4\u30f3\u30fb\u30b3\u30fc\u30c7\u30a3\u30f3\u30b0', desc: 'Manus\u3067\u30c7\u30b6\u30a4\u30f3\uff5e\u5b9f\u88c5\u3092\u81ea\u52d5\u5316' },
-      { type: 'claude', title: '\u30b3\u30f3\u30c6\u30f3\u30c4\u751f\u6210', desc: '\u5404\u30da\u30fc\u30b8\u306e\u30c6\u30ad\u30b9\u30c8\u30b3\u30f3\u30c6\u30f3\u30c4\u3092\u751f\u6210' },
-      { type: 'midjourney', title: '\u30d3\u30b8\u30e5\u30a2\u30eb\u7d20\u6750\u751f\u6210', desc: '\u30d2\u30fc\u30ed\u30fc\u753b\u50cf\u30fb\u30a2\u30a4\u30b3\u30f3\u7b49\u3092\u751f\u6210' },
-      { type: 'chatgpt', title: 'SEO\u6700\u9069\u5316', desc: '\u30e1\u30bf\u30bf\u30b0\u30fb\u69cb\u9020\u5316\u30c7\u30fc\u30bf\u306e\u6700\u9069\u5316' },
-      { type: 'manual', title: '\u30c7\u30d7\u30ed\u30a4\u30fb\u516c\u958b', desc: '\u30b5\u30fc\u30d0\u30fc\u8a2d\u5b9a\u30fbDNS\u30fbSSL\u5bfe\u5fdc\u30fb\u516c\u958b' },
-      { type: 'output', title: 'HP\u5b8c\u6210', desc: '\u4f01\u696d\u30db\u30fc\u30e0\u30da\u30fc\u30b8\u5b8c\u6210\u30fb\u904b\u7528\u958b\u59cb' },
+      { type: 'current', title: '読んだ内容をすぐ忘れる', desc: '読書はしているが記録がなく、知識が蓄積しない' },
+      { type: 'rn_game', title: 'READING GAME', desc: '読書ストリーク開始。XPを稼いでレベルアップ' },
+      { type: 'rn_time', title: '読書時間設計', desc: '生活パターンから最適な読書時間を設計' },
+      { type: 'extract', title: '精読＋マーキング', desc: '核心メッセージに線を引きながら精読' },
+      { type: 'rn_magazine', title: 'MAGAZINE NOTE', desc: '読書記録をREADING NOTEに記入' },
+      { type: 'ir_feedback', title: 'フィードバックAIで添削', desc: 'ノートの内容を専用AIが8要素で分析' },
+      { type: 'rn_action', title: 'ACTION NOTE', desc: '読書の気づき→具体的行動計画に変換' },
+      { type: 'mutate', title: '行動実践', desc: '計画通りに行動し、結果を記録' },
+      { type: 'record', title: 'リーディングログ記録', desc: '読書＋AI活用の実践をログに記録' },
+      { type: 'mission', title: '読書が知的資産として蓄積されている', desc: '後から検索・参照・活用できる「脳の外部メモリ」が完成' },
     ]
   },
-  // ── 恋愛テンプレート ──
+  infinity_road: {
+    name: 'インフィニティ∞リーディングに至る道',
+    flow: [
+      { type: 'current', title: '読書の仕方がわからない', desc: '本は好きだが、読書力の伸ばし方がわからない。読みっぱなし' },
+      { type: 'rn_game', title: 'READING GAMEで習慣化', desc: '読書ストリークを開始。まず7日連続を目指す' },
+      { type: 'rn_time', title: '読書時間を確保', desc: '月8冊ペースを実現する時間設計。オーディオブック1.7倍速も活用' },
+      { type: 'select', title: 'READ 8 第1期', desc: '最初の8冊を戦略的に選書。ジャンル横断で化学反応の種を撒く' },
+      { type: 'ir_teaching', title: 'ティーチングAIで学習', desc: '書籍の内容を専用AIと対話しながら完全理解' },
+      { type: 'extract', title: '精読＋抽出力を鍛える', desc: '著者の核心メッセージを一文で言えるようになるまで' },
+      { type: 'rn_magazine', title: 'MAGAZINE NOTEを習慣化', desc: '全ての本の読書記録をREADING NOTEに蓄積' },
+      { type: 'ir_feedback', title: 'フィードバックAIで書評力UP', desc: '書評・ノートを専用AIが8要素で添削' },
+      { type: 'crossbreed', title: '交配力の覚醒', desc: '異分野の本同士を掛け合わせる訓練。「これは繋がる！」が常態化' },
+      { type: 'mutate', title: '変異力で行動変容', desc: '読書→仮説→実験→検証のサイクルを月単位で回す' },
+      { type: 'diffuse', title: '拡散力でアウトプット', desc: '書評・SNS・読書会で発信。伝道師として知の拡散' },
+      { type: 'aihyper', title: 'AIハイパーリーディング習得', desc: '複数AIを使い分け、読書体験を質的に変容させる' },
+      { type: 'ir_creative', title: 'クリエイティブAIで無地思考', desc: '専用AIと対話しながらA3の紙で思考の化学反応を極大化' },
+      { type: 'muji', title: '無地思考の日常化', desc: '白紙が思考の宇宙になる。1D→2D→3D以上の次元上昇' },
+      { type: 'record', title: '脳内ストック資産化', desc: '知識のデータベースが「脳の外部メモリ」として機能' },
+      { type: 'mission', title: '∞インフィニティ∞リーディングに到達', desc: '脳内ストックが閾値を突破。アイデアが無限に湧き出す。読者から創造者へ' },
+    ]
+  },
+  read8tree: {
+    name: 'READ 8 読書ツリー（樹形図）',
+    flow: 'custom'
+  },
+  annual_program: {
+    name: '1年間プログラム全体フロー',
+    flow: [
+      { type: 'current', title: '読書の仕方がわからない', desc: '月0-2冊。8要素未測定。脳内ストック資産化度0%' },
+      { type: 'select', title: 'Month 1-2: 覚醒+探索', desc: 'READ 8習慣化。VWFA/ミラーニューロンの理解。AI活用開始' },
+      { type: 'extract', title: 'Month 3: 加速', desc: 'AIハイパーリーディング実践。抽出力の訓練。資産化度20%' },
+      { type: 'record', title: 'Month 4: 記録 (G III認定)', desc: 'READING NOTE完全攻略。G IIIビギナー認定取得。資産化度28%' },
+      { type: 'aihyper', title: 'Month 5-6: 資産化+実践', desc: '脳内ストック資産化。異分野横断。行動変容。資産化度42%' },
+      { type: 'crossbreed', title: 'Month 7-8: 交配+変異', desc: 'ミーム理論。対極の本で交配。未知の領域で変異。資産化度62%' },
+      { type: 'diffuse', title: 'Month 9: 拡散 (G II認定)', desc: '書評・プレゼン・拡散戦略。G IIエキスパート認定。資産化度68%' },
+      { type: 'muji', title: 'Month 10-11: 思考+統合', desc: '無地思考10枚チャレンジ。8要素の統合。年間レポート。資産化度80%' },
+      { type: 'mission', title: 'Month 12: ∞インフィニティ到達', desc: 'G Iマスター認定。96冊読了。資産化度85%。読者から創造者へ' },
+    ]
+  },
+  monthly_read8: {
+    name: '毎月のREAD 8サイクル',
+    flow: [
+      { type: 'current', title: '今月のテーマを決める', desc: '年間プログラムの月テーマに合わせて8冊のテーマを設定' },
+      { type: 'rn_read8navi', title: 'READ 8 選書ナビで選書', desc: 'AIに質問しながら最適な8冊を選ぶ' },
+      { type: 'book', title: '8冊を精読', desc: '各本から核心メッセージを抽出しながら読む' },
+      { type: 'rn_magazine', title: 'MAGAZINE NOTEに記録', desc: '読書記録をREADING NOTEに蓄積' },
+      { type: 'ir_feedback', title: 'フィードバックAIで添削', desc: '書評・ノートを8要素で分析' },
+      { type: 'rn_essence', title: 'READ 8 ESSENCE', desc: '8冊のエッセンスを融合。交配マトリクス作成' },
+      { type: 'muji', title: '無地思考', desc: 'A3の紙で8冊の化学反応を最大化' },
+      { type: 'record', title: 'リーディングログ記録', desc: '全活動をログに記録。脳内ストック資産化度を更新' },
+      { type: 'mission', title: '月の目標を達成', desc: '資産化度が上昇。次の月のテーマへ' },
+    ]
+  },
+
+  // ===== TYPE恋 テンプレート =====
   love_roadmap: {
     name: '恋愛成就ロードマップ',
     flow: [
-      { type: 'self_love', title: '自分を知る・愛する', desc: '自己肯定感を育て、愛着スタイルを理解する' },
+      { type: 'current', title: '恋愛がうまくいかない', desc: '自分のパターンが見えず、同じ失敗を繰り返している' },
+      { type: 'self_love', title: '自分を知る・愛する', desc: '愛着スタイル・自己肯定感・自分の軸を整える' },
       { type: 'attraction', title: '魅力を最大化する', desc: '内面・外見・第一印象を磨く' },
-      { type: 'ai_diagnosis', title: '8コア要素診断', desc: 'AIで恋愛力を数値化し弱点を特定' },
-      { type: 'encounter', title: '出会いの場を開拓', desc: '打席数を増やし機会を最大化' },
-      { type: 'discernment', title: '相手を見極める', desc: '絶対基準で脳科学の罠を回避' },
-      { type: 'communication', title: 'LINEと会話を磨く', desc: '対話力で距離を縮める' },
-      { type: 'empathy', title: '親密さを育てる', desc: '共感力で絆を深める' },
-      { type: 'nurturing', title: '信頼を積み重ねる', desc: '育成力で関係を安定させる' },
-      { type: 'endurance', title: '一生のパートナーへ', desc: '持続力で永遠の関係を設計' },
-      { type: 'mission', title: '運命の人と結ばれる', desc: '恋愛成就の完成形' },
+      { type: 'ai_diagnosis', title: '8コア要素診断', desc: '8スキルの現在地を数値化' },
+      { type: 'encounter', title: '出会いの場を開拓', desc: '打席数を増やし、機会を最大化' },
+      { type: 'discernment', title: '相手を見極める', desc: 'ドーパミンの罠を避け、本物の相性を判断' },
+      { type: 'ai_line', title: 'LINE添削で温度感を調整', desc: '適切な距離感のメッセージを送る' },
+      { type: 'ai_roleplay', title: 'デート想定練習', desc: '初デートのロールプレイでシミュレーション' },
+      { type: 'communication', title: '告白の言葉を磨く', desc: '想いを最も伝わる形にする' },
+      { type: 'empathy', title: '親密さを育てる', desc: '愛着を深め、相手の感情に寄り添う' },
+      { type: 'nurturing', title: '信頼を積み重ねる', desc: '喧嘩を乗り越え、感謝を習慣化' },
+      { type: 'endurance', title: '一生のパートナーへ', desc: '結婚・長期設計の哲学を持つ' },
+      { type: 'mission', title: '運命の人と結ばれ、愛され続ける', desc: '恋愛インフィニティに到達' },
     ]
   },
-  encounter_flow: {
+  love_encounter: {
     name: '出会い→交際フロー',
     flow: [
-      { type: 'encounter', title: '出会いの場を選ぶ', desc: 'マッチングアプリ・イベント・紹介' },
-      { type: 'note_encounter', title: '出会い記録', desc: '第一印象と気づきをLOVE NOTEに記録' },
-      { type: 'ai_line', title: '最初のLINE添削', desc: 'AIで温度感分析+改善案3パターン' },
-      { type: 'communication', title: '会話を深める', desc: '対話力で相手の本質を引き出す' },
-      { type: 'note_date', title: '初デート記録', desc: 'デートの振り返りをノートに記録' },
-      { type: 'ai_roleplay', title: 'デート練習', desc: 'AIロールプレイで次のデートを準備' },
-      { type: 'mission', title: '交際開始', desc: '告白して交際をスタートさせる' },
+      { type: 'current', title: '出会いがない', desc: '機会が少なく、良い人に出会えていない' },
+      { type: 'encounter', title: '出会いの場を選ぶ', desc: 'アプリ・紹介・趣味の場から最適な戦場を選ぶ' },
+      { type: 'note_encounter', title: '出会い記録をつける', desc: '第一印象・場所・感想をLOVE NOTEに記録' },
+      { type: 'ai_line', title: '最初のメッセージ添削', desc: '返信率を最大化するLINEの書き方' },
+      { type: 'note_date', title: '初デート記録', desc: 'デートの振り返りと次への改善' },
+      { type: 'ai_roleplay', title: 'デート会話練習', desc: '2回目デートの会話をシミュレーション' },
+      { type: 'communication', title: '告白', desc: 'タイミングと言葉を設計する' },
+      { type: 'mission', title: '交際開始', desc: '相思相愛の関係が始まる' },
     ]
   },
-  line_strategy: {
+  love_line: {
     name: 'LINE攻略フロー',
     flow: [
-      { type: 'note_strategy', title: '相手のタイプ分析', desc: '攻略ノートで相手の特徴を整理' },
-      { type: 'ai_line', title: '最初のメッセージ添削', desc: 'AIで最適なファーストメッセージを設計' },
-      { type: 'ai_line', title: '2通目以降の添削', desc: '会話の流れを分析し次の一手を提案' },
-      { type: 'note_message', title: 'やり取り記録', desc: 'メッセージノートで成功パターンを蓄積' },
-      { type: 'communication', title: 'デートに誘う', desc: '自然な流れでデートの約束を取る' },
-      { type: 'mission', title: 'デートの約束を取る', desc: 'LINE→リアルへの転換' },
+      { type: 'current', title: 'LINEの返信が来ない', desc: 'メッセージの温度感が合わず、会話が続かない' },
+      { type: 'note_strategy', title: '相手のタイプを分析', desc: '16タイプから相手の傾向を推測' },
+      { type: 'ai_line', title: '最初の一通を添削', desc: '重すぎず軽すぎない最適なトーン' },
+      { type: 'ai_line', title: '2通目以降の添削', desc: '質問で終わる構造、返信したくなる仕掛け' },
+      { type: 'note_message', title: 'やり取りを記録', desc: 'うまくいったパターンを蓄積' },
+      { type: 'communication', title: 'デートに誘う', desc: '自然な流れで次のステップへ' },
+      { type: 'mission', title: 'デートの約束が取れた', desc: 'LINEから対面へ関係が進展' },
     ]
   },
-  self_improvement: {
-    name: '自分磨き計画（秘めフォト連携）',
+  love_ideal: {
+    name: '理想のパートナー設計',
     flow: [
-      { type: 'self_love', title: '自己肯定感を育てる', desc: '自分の長所を再発見する' },
-      { type: 'attraction', title: '外見を磨く', desc: 'ファッション・メイク・ヘアの改善' },
-      { type: 'himephoto', title: '秘めフォトで自分を知る', desc: '撮影を通じて新しい自分に出会う' },
-      { type: 'zettai_reido', title: '絶対麗度スコア記録', desc: '絶対麗度ラボで美しさを数値化' },
-      { type: 'ai_coach', title: '自分磨きコーチング', desc: 'AIラブコーチと一緒に改善計画' },
-      { type: 'note_selfcare', title: '自分磨き記録', desc: 'LOVE NOTEで変化を可視化' },
-      { type: 'mission', title: '最高の自分になる', desc: '内面×外見の総合的な輝き' },
+      { type: 'current', title: '好みのタイプがわからない', desc: '漠然としたイメージだけで、基準が曖昧' },
+      { type: 'self_love', title: '自分の核となる価値観', desc: '何があっても譲れないものを言語化' },
+      { type: 'book_ultimate', title: '究極の恋愛大全 第5章', desc: '価値観と恋愛パターンを把握する' },
+      { type: 'discernment', title: '絶対的価値基準を設計', desc: 'Must/Want/NGの3層で整理' },
+      { type: 'note_insight', title: '過去のパターンを分析', desc: 'なぜいつも同じタイプを選ぶのか？' },
+      { type: 'ai_coach', title: 'AIコーチと深掘り', desc: '振り返りモードで価値観を言語化' },
+      { type: 'mission', title: '明確な理想像ができた', desc: '感情ではなく基準で判断できる状態' },
     ]
   },
-  himephoto_journey: {
-    name: '秘めフォト ステップアップ',
-    flow: [
-      { type: 'himephoto', title: '秘めフォト初回体験', desc: 'まずは基本の秘めフォトで自分を撮る' },
-      { type: 'note_selfcare', title: '撮影の振り返り', desc: '発見した自分の魅力をノートに記録' },
-      { type: 'himepremium', title: '秘めフォトプレミアム', desc: 'より本格的な撮影で魅力を引き出す' },
-      { type: 'himecinema', title: '秘めフォトシネマ', desc: '映画のワンシーンのような自分を撮る' },
-      { type: 'chumon_photo', title: '注文の多い写真館', desc: '理想の自分をオーダーメイドで撮影' },
-      { type: 'himewedding', title: '秘めフォトウェディング', desc: '最高の瞬間を最高の形で残す' },
-      { type: 'mission', title: '自分史上最高の輝き', desc: '写真を通じて自信と魅力を手に入れる' },
-    ]
-  },
-  conflict_resolution: {
+  love_conflict: {
     name: '喧嘩修復フロー',
     flow: [
-      { type: 'note_insight', title: '喧嘩の原因分析', desc: 'パターン認識で根本原因を特定' },
-      { type: 'book', title: '究極の恋愛大全 第22章', desc: '喧嘩解決の理論を学ぶ' },
-      { type: 'ai_roleplay', title: 'すれ違い修復練習', desc: 'AIロールプレイで仲直りの練習' },
-      { type: 'empathy', title: '相手の気持ちを理解', desc: '共感力で相手の視点に立つ' },
-      { type: 'nurturing', title: '感謝を伝える', desc: '育成力で信頼を取り戻す' },
-      { type: 'mission', title: '信頼の再構築', desc: 'より強い絆で結ばれる' },
+      { type: 'current', title: '喧嘩して気まずい', desc: '相手が怒っている、冷戦状態、話しかけづらい' },
+      { type: 'note_insight', title: '喧嘩の原因を整理', desc: '何がきっかけで、何が本当の問題なのか' },
+      { type: 'book_ultimate', title: '究極の恋愛大全 第22章', desc: '喧嘩・すれ違いの解決法を学ぶ' },
+      { type: 'ai_roleplay', title: 'すれ違い修復の練習', desc: 'AIを相手にまず謝り方を練習' },
+      { type: 'empathy', title: '相手の気持ちを理解する', desc: '怒りの奥にある感情に気づく' },
+      { type: 'nurturing', title: '感謝と謝罪を伝える', desc: '言葉と行動で誠意を示す' },
+      { type: 'mission', title: '信頼が以前より深くなった', desc: '喧嘩を乗り越えて関係が成熟' },
     ]
   },
+  love_selfcare: {
+    name: '自分磨き計画',
+    flow: [
+      { type: 'current', title: '自分に自信がない', desc: '魅力が足りない気がして、恋愛に踏み出せない' },
+      { type: 'self_love', title: '自己肯定感を育てる', desc: '自分の長所を再発見する' },
+      { type: 'book_equation', title: '恋愛成就の方程式 第15章', desc: '自分が思っているより、ずっと魅力的だ' },
+      { type: 'attraction', title: '外見を磨く', desc: '清潔感・ファッション・体型' },
+      { type: 'note_selfcare', title: '絶対麗度スコア記録', desc: '8次元で現在の自分を数値化' },
+      { type: 'ai_coach', title: '戦略モードで行動計画', desc: '具体的に何を・いつ・どう変えるか' },
+      { type: 'mission', title: '自信を持って恋愛に臨める', desc: '内面と外見の両方が整った状態' },
+    ]
+  },
+
+  mujithinking: {
+    name: '無地思考ワークショップ',
+    flow: [
+      { type: 'current', title: '思考が整理できない', desc: '頭の中にアイデアはあるが、形にならない' },
+      { type: 'book', title: 'テーマとなる本を選ぶ', desc: '最近読んだ本の中で最も刺激を受けた1冊' },
+      { type: 'extract', title: '核心メッセージを抽出', desc: '著者が最も伝えたかったことを一文で言語化' },
+      { type: 'muji', title: 'A3無地の紙に展開', desc: '中央に核心を置き、自由に思考を広げる' },
+      { type: 'crossbreed', title: '異分野と交配', desc: '全く別の分野の知識と掛け合わせる' },
+      { type: 'ir_creative', title: 'クリエイティブAIとブレスト', desc: '行き詰まったら専用AIに問いを投げてもらう' },
+      { type: 'muji', title: '2D→3Dへ次元上昇', desc: 'マインドマップから構造化・フラクタル思考へ' },
+      { type: 'rn_action', title: 'ACTION NOTEに変換', desc: '思考の結論を具体的な行動計画に落とし込む' },
+      { type: 'mission', title: '新しいアイデア・仮説が生まれた', desc: '読書×無地思考から生まれた独自のアウトプット' },
+    ]
+  }
 };
 
+function filterTemplatesForSkill(skill) {
+  // サイドバーのテンプレートボタンをスキルに応じて表示/非表示
+  var sidebar = document.getElementById('sidebar');
+  if (!sidebar) return;
+
+  var templateSkillMap = {
+    'annual_program': 'read', 'monthly_read8': 'read', 'infinity_road': 'read',
+    'aihyper': 'read', 'read8': 'read', 'read8tree': 'read',
+    'readingnote': 'read', 'mujithinking': 'read',
+    'love_roadmap': 'love', 'love_encounter': 'love', 'love_line': 'love',
+    'love_ideal': 'love', 'love_conflict': 'love', 'love_selfcare': 'love',
+    'book': 'ai', 'marketing': 'ai', 'website': 'ai',
+  };
+
+  // 統合モードではUNLOCKED_SKILLSを使用、そうでなければskillパラメータ
+  var activeSkills = UNIFIED_MODE ? UNLOCKED_SKILLS :
+    (skill === 'all' ? Object.keys(CHART_TYPES) : [skill]);
+
+  var buttons = sidebar.querySelectorAll('.template-btn');
+  buttons.forEach(function(btn) {
+    var onclick = btn.getAttribute('onclick') || '';
+    if (!onclick.includes('loadTemplate')) return;
+
+    var templateKey = '';
+    Object.keys(templateSkillMap).forEach(function(k) {
+      if (onclick.indexOf(k) !== -1) templateKey = k;
+    });
+
+    if (templateKey) {
+      var tmplSkill = templateSkillMap[templateKey];
+      btn.style.display = activeSkills.indexOf(tmplSkill) !== -1 ? '' : 'none';
+    }
+  });
+
+  // 見出しの表示/非表示
+  var readHeading = document.getElementById('tmpl-heading-read');
+  var loveHeading = document.getElementById('tmpl-heading-love');
+  if (readHeading) readHeading.style.display = activeSkills.indexOf('read') !== -1 ? 'flex' : 'none';
+  if (loveHeading) loveHeading.style.display = activeSkills.indexOf('love') !== -1 ? 'flex' : 'none';
+}
+
 function loadTemplate(key) {
+  // カスタムテンプレート（樹形図等）の場合は専用関数を呼ぶ
+  if (key === 'read8tree') {
+    loadRead8Tree();
+    return;
+  }
+
   var tmpl = TEMPLATES[key];
   if (!tmpl) return;
   if (Object.keys(nodes).length > 0) {
@@ -2978,6 +2984,120 @@ function loadTemplate(key) {
   showToast('\u300c' + tmpl.name + '\u300d\u3092\u8aad\u307f\u8fbc\u307f\u307e\u3057\u305f');
 }
 
+// READ 8 読書ツリー（樹形図テンプレート）
+function loadRead8Tree() {
+  if (Object.keys(nodes).length > 0) {
+    if (!confirm('現在のノードをクリアして「READ 8 読書ツリー」を読み込みますか？')) return;
+  }
+  Object.keys(nodes).forEach(function(id) { var el = document.getElementById(id); if (el) el.remove(); });
+  nodes = {}; connections = []; selectedNodeId = null; nextNodeId = 1;
+  propertyPanel.classList.remove('open');
+
+  document.getElementById('projectName').value = 'READ 8 読書ツリー（樹形図）';
+
+  // レイアウト定数
+  var centerX = 600;
+  var topY = 80;
+  var bookY = 260;
+  var bookGap = 280;
+  var processY = 460;
+  var mergeY = 650;
+  var bottomY = 820;
+
+  // === Before（上部中央）===
+  var before = addNode('current', centerX - 80, topY, '月8冊を読みたい', '選書に迷い、読んでも繋がらない状態');
+
+  // === 選書設計（Beforeの下）===
+  var selectNode = addNode('select', centerX - 80, topY + 90, 'READ 8 選書設計', 'ジャンル横断×難易度バランスで8冊を選ぶ');
+  connections.push({ from: before, to: selectNode });
+
+  // === 8冊の本ノード（横に展開）===
+  var books = [
+    { title: '①『ファスト&スロー』', desc: '認知心理学（Center・古典）', genre: '心理学' },
+    { title: '②『イシューからはじめよ』', desc: '思考法（専門書）', genre: 'ビジネス' },
+    { title: '③『利己的な遺伝子』', desc: '進化生物学（Center・古典）', genre: '科学' },
+    { title: '④『ストーリーとしての競争戦略』', desc: '経営戦略（専門書）', genre: 'ビジネス' },
+    { title: '⑤『コンビニ人間』', desc: '現代文学（異分野）', genre: '文学' },
+    { title: '⑥『銃・病原菌・鉄』', desc: '文明論（異分野）', genre: '歴史' },
+    { title: '⑦『アウトプット大全』', desc: '実践系', genre: '自己啓発' },
+    { title: '⑧『論語と算盤』', desc: '古典×ビジネス（教養）', genre: '哲学' },
+  ];
+
+  var bookIds = [];
+  var totalWidth = (books.length - 1) * bookGap;
+  var startX = centerX - totalWidth / 2;
+
+  books.forEach(function(b, i) {
+    var x = startX + i * bookGap;
+    var id = addNode('book', x - 80, bookY, b.title, b.desc);
+    connections.push({ from: selectNode, to: id });
+    bookIds.push(id);
+  });
+
+  // === 各本の下に読書プロセス ===
+  var processIds = [];
+  var processTypes = [
+    { type: 'extract',    title: '抽出', desc: '核心メッセージを抽出' },
+    { type: 'rn_researcher', title: 'ディープリサーチ', desc: '副読本を自動生成' },
+    { type: 'extract',    title: '抽出', desc: '核心を一文で言語化' },
+    { type: 'claude',     title: 'Claude対話', desc: '論理構造を分析' },
+    { type: 'rn_story',   title: '物語解析', desc: '小説の構造を多角的に分析' },
+    { type: 'rn_researcher', title: 'ディープリサーチ', desc: '文明論の背景を調査' },
+    { type: 'rn_action',  title: 'ACTION NOTE', desc: '即座に行動計画へ' },
+    { type: 'rn_classic', title: '古典ナビ', desc: '渋沢栄一の思想を現代語で' },
+  ];
+
+  processTypes.forEach(function(p, i) {
+    var x = startX + i * bookGap;
+    var id = addNode(p.type, x - 80, processY, p.title, p.desc);
+    connections.push({ from: bookIds[i], to: id });
+    processIds.push(id);
+  });
+
+  // === 交配ゾーン（複数の本を掛け合わせる）===
+  var cross1 = addNode('crossbreed', startX + 0.5 * bookGap, mergeY, '交配①：認知×思考', '「ファスト&スロー」×「イシュー」→ 意思決定の新フレーム');
+  connections.push({ from: processIds[0], to: cross1 });
+  connections.push({ from: processIds[1], to: cross1 });
+
+  var cross2 = addNode('crossbreed', startX + 2.5 * bookGap, mergeY, '交配②：進化×戦略', '「利己的な遺伝子」×「競争戦略」→ 進化論的経営');
+  connections.push({ from: processIds[2], to: cross2 });
+  connections.push({ from: processIds[3], to: cross2 });
+
+  var cross3 = addNode('crossbreed', startX + 4.5 * bookGap, mergeY, '交配③：文学×文明', '「コンビニ人間」×「銃・病原菌・鉄」→ 個と社会構造');
+  connections.push({ from: processIds[4], to: cross3 });
+  connections.push({ from: processIds[5], to: cross3 });
+
+  var cross4 = addNode('crossbreed', startX + 6.5 * bookGap, mergeY, '交配④：実践×古典', '「アウトプット大全」×「論語と算盤」→ 東洋的アウトプット');
+  connections.push({ from: processIds[6], to: cross4 });
+  connections.push({ from: processIds[7], to: cross4 });
+
+  // === READ 8 ESSENCE（交配を統合）===
+  var essence = addNode('rn_essence', centerX - 80, mergeY + 120, 'READ 8 ESSENCE', '8冊のエッセンスを融合。交配マトリクス完成');
+  connections.push({ from: cross1, to: essence });
+  connections.push({ from: cross2, to: essence });
+  connections.push({ from: cross3, to: essence });
+  connections.push({ from: cross4, to: essence });
+
+  // === 無地思考 ===
+  var mujiNode = addNode('muji', centerX - 80, mergeY + 220, '無地思考', 'A3の紙に8冊の化学反応を展開');
+  connections.push({ from: essence, to: mujiNode });
+
+  // === After（最下部中央）===
+  var after = addNode('mission', centerX - 80, mergeY + 320, '8冊が脳内で有機的に結合した', '知識の化学反応が日常的に起きる。閾値突破に近づいた');
+  connections.push({ from: mujiNode, to: after });
+
+  renderConnections();
+
+  // ビュー調整（広い樹形図を俯瞰）
+  canvasOffset.x = -200;
+  canvasOffset.y = -30;
+  canvasScale = 0.45;
+  applyCanvasTransform();
+  updateMinimap();
+
+  showToast('「READ 8 読書ツリー（樹形図）」を読み込みました');
+}
+
 // ============================================
 // Utilities
 // ============================================
@@ -2985,6 +3105,99 @@ function escHtml(str) {
   var div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
+}
+
+// プロジェクト選択ダイアログ（リーディングログから呼ばれる）
+function showProjectPickerForNodes(nodesToAdd) {
+  var pList = {};
+  try { pList = JSON.parse(localStorage.getItem('ai_mm_projects') || '{}'); } catch(e) {}
+
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);';
+
+  var html = '<div style="background:var(--bg-secondary);border:1px solid var(--glass-border);border-radius:16px;padding:24px;max-width:400px;width:90%;max-height:80vh;overflow-y:auto;">';
+  html += '<h3 style="font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:4px;">プロジェクトを選択</h3>';
+  html += '<p style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">' + nodesToAdd.length + '冊の読書記録をどのプロジェクトに追加しますか？</p>';
+
+  // 新規プロジェクト
+  html += '<div id="pp-new" style="padding:14px;border-radius:10px;background:rgba(147,187,212,0.05);border:1px solid rgba(147,187,212,0.2);cursor:pointer;margin-bottom:12px;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">';
+  html += '<div style="font-size:14px;font-weight:600;color:var(--gold-primary);">＋ 新規プロジェクトとして作成</div>';
+  html += '<div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">選択した本をノードとして並べた新しいプロジェクトを作成</div>';
+  html += '</div>';
+
+  // 既存プロジェクト
+  var keys = Object.keys(pList);
+  if (keys.length > 0) {
+    html += '<div style="font-size:10px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;">既存プロジェクト</div>';
+    keys.forEach(function(key) {
+      var info = pList[key];
+      var nc = 0;
+      try { var pd = JSON.parse(localStorage.getItem(key) || '{}'); nc = pd.nodes ? Object.keys(pd.nodes).length : 0; } catch(e) {}
+      html += '<div class="pp-item" data-key="' + key + '" style="padding:12px;border-radius:10px;background:var(--bg-primary);border:1px solid var(--glass-border);cursor:pointer;margin-bottom:8px;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">';
+      html += '<div style="font-size:13px;color:var(--text-primary);">' + (info.name || key) + '</div>';
+      html += '<div style="font-size:10px;color:var(--text-secondary);margin-top:2px;">' + nc + 'ノード</div>';
+      html += '</div>';
+    });
+  } else {
+    html += '<div style="font-size:12px;color:var(--text-secondary);text-align:center;padding:16px;">既存プロジェクトはありません</div>';
+  }
+
+  // キャンセル
+  html += '<div id="pp-cancel" style="text-align:center;margin-top:12px;padding:8px;border-radius:10px;border:1px solid var(--glass-border);cursor:pointer;font-size:12px;color:var(--text-secondary);">キャンセル</div>';
+  html += '</div>';
+
+  overlay.innerHTML = html;
+  document.body.appendChild(overlay);
+
+  // 新規プロジェクト
+  overlay.querySelector('#pp-new').addEventListener('click', function() {
+    document.body.removeChild(overlay);
+    // 現在のプロジェクトをクリアして新規作成
+    Object.keys(nodes).forEach(function(id) { var el = document.getElementById(id); if (el) el.remove(); });
+    nodes = {}; connections = []; selectedNodeId = null; nextNodeId = 1;
+    propertyPanel.classList.remove('open');
+    document.getElementById('projectName').value = '読書記録（' + nodesToAdd.length + '冊）';
+
+    nodesToAdd.forEach(function(n, i) {
+      addNode(n.type || 'book', 200 + (i % 4) * 260, 200 + Math.floor(i / 4) * 160, n.title || '', n.description || '');
+    });
+    renderConnections();
+    updateMinimap();
+    updateCounter();
+    showToast(nodesToAdd.length + '冊で新規プロジェクトを作成しました');
+  });
+
+  // 既存プロジェクト
+  overlay.querySelectorAll('.pp-item').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var projKey = el.getAttribute('data-key');
+      document.body.removeChild(overlay);
+      // プロジェクトを読み込み
+      try {
+        var projData = JSON.parse(localStorage.getItem(projKey) || '{}');
+        loadProjectData(projData);
+      } catch(e) {}
+      // ノードを追加
+      setTimeout(function() {
+        var sx = 200 + Object.keys(nodes).length * 50;
+        nodesToAdd.forEach(function(n, i) {
+          addNode(n.type || 'book', sx + (i % 4) * 260, 200 + Math.floor(i / 4) * 160, n.title || '', n.description || '');
+        });
+        renderConnections();
+        updateMinimap();
+        updateCounter();
+        showToast(nodesToAdd.length + '冊をプロジェクトに追加しました');
+      }, 300);
+    });
+  });
+
+  // キャンセル
+  overlay.querySelector('#pp-cancel').addEventListener('click', function() {
+    document.body.removeChild(overlay);
+  });
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) document.body.removeChild(overlay);
+  });
 }
 
 function showToast(msg) {
@@ -3510,37 +3723,7 @@ function addNote() {
   if (!nodes[selectedNodeId].notes) nodes[selectedNodeId].notes = [];
   var now = new Date();
   var timestamp = now.getFullYear() + '/' + (now.getMonth()+1) + '/' + now.getDate() + ' ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
-  nodes[selectedNodeId].notes.push({ title: '', text: '', timestamp: timestamp, photos: [] });
-  renderNotes();
-  saveProject();
-}
-
-function addPhotoToNote(noteIndex) {
-  var input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.multiple = true;
-  input.onchange = function(e) {
-    var files = e.target.files;
-    if (!files || !selectedNodeId || !nodes[selectedNodeId]) return;
-    var note = nodes[selectedNodeId].notes[noteIndex];
-    if (!note.photos) note.photos = [];
-    Array.from(files).forEach(function(file) {
-      var reader = new FileReader();
-      reader.onload = function(ev) {
-        note.photos.push({ name: file.name, data: ev.target.result, added: new Date().toISOString() });
-        renderNotes();
-        saveProject();
-      };
-      reader.readAsDataURL(file);
-    });
-  };
-  input.click();
-}
-
-function removePhotoFromNote(noteIndex, photoIndex) {
-  if (!selectedNodeId || !nodes[selectedNodeId]) return;
-  nodes[selectedNodeId].notes[noteIndex].photos.splice(photoIndex, 1);
+  nodes[selectedNodeId].notes.push({ title: '', text: '', timestamp: timestamp });
   renderNotes();
   saveProject();
 }
@@ -3557,18 +3740,6 @@ function renderNotes() {
 
   container.innerHTML = '';
   n.notes.forEach(function(item, i) {
-    if (!item.photos) item.photos = [];
-    var photosHtml = '';
-    if (item.photos.length > 0) {
-      photosHtml = '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">';
-      item.photos.forEach(function(photo, pi) {
-        photosHtml += '<div style="position:relative;width:72px;height:72px;border-radius:6px;overflow:hidden;border:1px solid rgba(147,187,212,0.2);">' +
-          '<img src="' + photo.data + '" style="width:100%;height:100%;object-fit:cover;cursor:pointer;" onclick="window.open(this.src)" title="' + escHtml(photo.name) + '">' +
-          '<span onclick="removePhotoFromNote(' + i + ',' + pi + ')" style="position:absolute;top:1px;right:3px;color:#fff;background:rgba(0,0,0,0.5);border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;line-height:1;">&times;</span>' +
-        '</div>';
-      });
-      photosHtml += '</div>';
-    }
     var div = document.createElement('div');
     div.style.cssText = 'margin:5px 0;padding:10px;background:rgba(147,187,212,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;';
     div.innerHTML =
@@ -3577,11 +3748,7 @@ function renderNotes() {
         '<span style="font-size:10px;color:var(--text-secondary);opacity:0.5;white-space:nowrap;">' + escHtml(item.timestamp) + '</span>' +
         '<span onclick="removeNote(' + i + ')" style="color:var(--text-secondary);cursor:pointer;opacity:0.4;font-size:14px;padding:0 2px;" onmouseover="this.style.opacity=1;this.style.color=\'#EF4444\'" onmouseout="this.style.opacity=0.4;this.style.color=\'var(--text-secondary)\'">&times;</span>' +
       '</div>' +
-      '<textarea placeholder="ノートを記録..." style="width:100%;min-height:60px;background:rgba(147,187,212,0.04);border:1px solid rgba(147,187,212,0.2);border-radius:4px;color:var(--text-primary);padding:8px;font-size:12px;font-family:inherit;outline:none;resize:vertical;line-height:1.6;" oninput="updateNoteField(' + i + ',\'text\',this.value)">' + escHtml(item.text) + '</textarea>' +
-      photosHtml +
-      '<button onclick="addPhotoToNote(' + i + ')" style="margin-top:6px;padding:4px 10px;background:transparent;border:1px dashed rgba(212,168,124,0.3);border-radius:4px;color:#8B7355;font-size:11px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;">' +
-        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> 写真を追加' +
-      '</button>';
+      '<textarea placeholder="ノートを記録..." style="width:100%;min-height:60px;background:rgba(147,187,212,0.04);border:1px solid rgba(147,187,212,0.2);border-radius:4px;color:var(--text-primary);padding:8px;font-size:12px;font-family:inherit;outline:none;resize:vertical;line-height:1.6;" oninput="updateNoteField(' + i + ',\'text\',this.value)">' + escHtml(item.text) + '</textarea>';
     container.appendChild(div);
   });
 
@@ -4020,13 +4187,6 @@ function generateReport() {
         if (nt.timestamp) html += '<div class="note-time">' + escHtml(nt.timestamp) + '</div>';
         html += '</div>';
         if (nt.text) html += '<div class="note-text">' + escHtml(nt.text) + '</div>';
-        if (nt.photos && nt.photos.length > 0) {
-          html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">';
-          nt.photos.forEach(function(photo) {
-            html += '<img src="' + photo.data + '" style="width:120px;height:120px;object-fit:cover;border-radius:6px;border:1px solid rgba(0,0,0,0.1);" title="' + escHtml(photo.name) + '">';
-          });
-          html += '</div>';
-        }
         html += '</div>';
       });
     }
@@ -4135,13 +4295,19 @@ function renderTypeMenu() {
   var menu = document.getElementById('typeMenu');
   var html = '<div style="font-size:11px;color:var(--text-secondary);padding:4px 8px 8px;font-weight:600;">表示するスキルを選択</div>';
 
-  // 解放済みスキルの判定（UNLOCKED_SKILLSを使用）
+  // 「すべて表示」オプション
+  var isAll = currentChartType === 'all';
   var hasMultipleSkills = UNLOCKED_SKILLS.length > 1;
 
-  // 「すべて表示」オプション（複数スキル解放時のみ表示）
-  if (hasMultipleSkills) {
-    var isAll = currentChartType === 'all';
-    html += '<div onclick="switchChartType(\'all\')" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;cursor:pointer;margin-bottom:4px;transition:all 0.15s;' +
+  if (!hasMultipleSkills) {
+    html += '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;cursor:not-allowed;margin-bottom:4px;opacity:0.4;border:1px solid transparent;">';
+    html += '<div style="width:28px;height:28px;border-radius:6px;background:#93bbd4;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;filter:grayscale(0.5);">ALL</div>';
+    html += '<div><div style="font-size:13px;color:var(--text-secondary);">Type All</div>';
+    html += '<div style="font-size:10px;color:var(--text-secondary);">全スキル解放で利用可能</div></div>';
+    html += '<span style="margin-left:auto;font-size:11px;color:var(--text-secondary);">🔒</span>';
+    html += '</div>';
+  } else {
+    html += '<div onclick="switchChartType(\'all\')" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;cursor:pointer;transition:all 0.15s;margin-bottom:4px;' +
       (isAll ? 'background:rgba(147,187,212,0.15);border:1px solid #93bbd4;' : 'background:transparent;border:1px solid transparent;') +
       '" onmouseover="if(!' + isAll + ')this.style.background=\'rgba(147,187,212,0.08)\'" onmouseout="if(!' + isAll + ')this.style.background=\'transparent\'">';
     html += '<div style="width:28px;height:28px;border-radius:6px;background:#93bbd4;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;">ALL</div>';
@@ -4186,10 +4352,21 @@ function renderTypeMenu() {
 }
 
 function switchChartType(type) {
-  // ?skill=パラメータがある場合、そのスキル以外への切り替えをブロック
-  var skillParam = new URLSearchParams(window.location.search).get('skill');
-  if (skillParam && type !== skillParam) return;
-  if (type !== 'all' && !CHART_TYPES[type]) return;
+  // 解放済みスキルのみ切替可能
+  var allSkillKeysSwitch = Object.keys(CHART_TYPES);
+  var unlockedSwitch = lockedToSkill ? [lockedToSkill] : allSkillKeysSwitch;
+
+  // ALLへの切り替え: スキルロック時は不可、それ以外はOK
+  if (type === 'all') {
+    if (lockedToSkill) {
+      showToast('このスキルタイプは追加購入で解放できます');
+      return;
+    }
+    // ALLは許可（下のロジックへ）
+  } else if (unlockedSwitch.indexOf(type) === -1) {
+    showToast('このスキルタイプは追加購入で解放できます');
+    return;
+  }
   if (type === currentChartType) {
     // 同じタイプをクリック → そのまま（allには戻さない）
     closeTypeMenu();
@@ -4208,8 +4385,11 @@ function switchChartType(type) {
   // パレットを再描画（フィルター適用）
   buildPalette();
 
+  // テンプレートをTYPEに連動して表示/非表示
+  filterTemplatesForSkill(type);
+
   closeTypeMenu();
-  localStorage.setItem(skKey('sea_chart_type'), currentChartType);
+  localStorage.setItem('sea_chart_type', currentChartType);
   showToast(currentChartType === 'all' ? 'Type Allを表示' : 'Type ' + CHART_TYPES[currentChartType].label + ' を表示');
 }
 
@@ -4553,28 +4733,42 @@ function restoreTheme() {
 // ============================================
 // Init
 // ============================================
+// URLパラメータで指定されたスキル（SEA LEARNINGからの起動時に使用）
+var lockedToSkill = null;
+
 function init() {
-  // チャートタイプ復元（フィルター表示）
-  // ?skill= パラメータがある場合はそのスキルを強制（localStorageより優先）
-  var skillParam = new URLSearchParams(window.location.search).get('skill');
+  // URLパラメータ ?skill=love or ?type=love でTYPEを指定可能（指定なしならread）
+  var urlParams = new URLSearchParams(window.location.search);
+  var skillParam = urlParams.get('skill');
+  var typeParam = urlParams.get('type');
+
+  // ?skill= で指定 → そのスキルにロック
+  // ?type= で指定 → そのタイプで起動（ロックなし）
+  // インフィニティ∞リーディング版: デフォルトは「読」
+  // パラメータなし → read（このファイルは読スキル専用）
   if (skillParam && CHART_TYPES[skillParam]) {
-    currentChartType = skillParam;
+    lockedToSkill = skillParam;
+    var initType = skillParam;
+  } else if (typeParam && CHART_TYPES[typeParam]) {
+    var initType = typeParam;
   } else {
-    var savedType = localStorage.getItem(skKey('sea_chart_type'));
-    if (savedType && (savedType === 'all' || CHART_TYPES[savedType])) {
-      currentChartType = savedType;
-    }
+    var initType = 'read';
   }
 
-  // スキル別テーマを適用（ピンクテーマ等）
-  if (skillParam) applySkillTheme(skillParam);
-  if (currentChartType === 'all') {
+  currentChartType = initType;
+  localStorage.setItem('sea_chart_type', initType);
+  if (initType === 'all') {
     document.getElementById('chartTypeIcon').textContent = 'ALL';
     document.getElementById('chartTypeLabel').textContent = 'Type All';
   } else {
-    var ctInit = CHART_TYPES[currentChartType];
+    var ctInit = CHART_TYPES[initType];
     document.getElementById('chartTypeIcon').textContent = ctInit.icon;
     document.getElementById('chartTypeLabel').textContent = 'Type ' + ctInit.label;
+  }
+
+  // スキルロック時はテンプレートを絞り込む（ALLの場合は全表示）
+  if (lockedToSkill) {
+    filterTemplatesForSkill(lockedToSkill);
   }
 
   restoreTheme();
@@ -4583,17 +4777,24 @@ function init() {
   renderCustomTemplates();
 
   // Try auto-load from localStorage
-  var saved = localStorage.getItem(skKey('ai_mission_map'));
+  var saved = localStorage.getItem('ai_mission_map');
   if (saved) {
     try { loadProjectData(JSON.parse(saved)); } catch(e) { /* ignore */ }
   }
 
-  // postMessageで親ページからデータを受信
+  // postMessageで親ページからプロジェクトデータを受信
   window.addEventListener('message', function(event) {
     if (event.data && event.data.type === 'load-project') {
       loadProjectData(event.data.project);
       showToast('SEA-CHARTに展開しました');
     }
+    // 親ページからTYPE切り替え
+    if (event.data && event.data.type === 'switch-chart-type' && event.data.chartType) {
+      if (CHART_TYPES[event.data.chartType]) {
+        switchChartType(event.data.chartType);
+      }
+    }
+    // 既存プロジェクトにノードを追加
     if (event.data && event.data.type === 'add-nodes') {
       var newNodes = event.data.nodes || [];
       var startX = 200 + Object.keys(nodes).length * 50;
@@ -4610,7 +4811,41 @@ function init() {
       renderConnections();
       updateMinimap();
       updateCounter();
-      showToast(newNodes.length + '件のノードを追加しました');
+      showToast(newNodes.length + '件の読書記録をノードとして追加しました');
+    }
+    // プロジェクト一覧を親ページに返す
+    // 待機中ノードを受け取り、プロジェクト選択ダイアログを表示
+    if (event.data && event.data.type === 'pick-project-and-add') {
+      var pendNodes = event.data.nodes || [];
+      showProjectPickerForNodes(pendNodes);
+    }
+    // 指定プロジェクトを読み込んでからノードを追加
+    if (event.data && event.data.type === 'load-and-add-nodes') {
+      var projKey = event.data.projectKey;
+      var projData = null;
+      try { projData = JSON.parse(localStorage.getItem(projKey) || 'null'); } catch(e) {}
+      if (projData) {
+        loadProjectData(projData);
+      }
+      // 少し待ってからノードを追加
+      var nodesToAdd = event.data.nodes || [];
+      setTimeout(function() {
+        var sx = 200 + Object.keys(nodes).length * 50;
+        var sy = 200;
+        nodesToAdd.forEach(function(n, i) {
+          addNode(
+            n.type || 'book',
+            sx + (i % 4) * 260,
+            sy + Math.floor(i / 4) * 160,
+            n.title || '',
+            n.description || ''
+          );
+        });
+        renderConnections();
+        updateMinimap();
+        updateCounter();
+        showToast(nodesToAdd.length + '件のノードをプロジェクトに追加しました');
+      }, 300);
     }
   });
 
@@ -5004,7 +5239,7 @@ init();
   if (localStorage.getItem(TUTORIAL_KEY)) return;
 
   // Load sample for first-time users too
-  var hasSaved = localStorage.getItem(skKey('ai_mission_map'));
+  var hasSaved = localStorage.getItem('ai_mission_map');
   if (!hasSaved) {
     var sampleProject2 = {
       name: 'サンプル：AIで事業計画書を作る',
