@@ -1313,7 +1313,14 @@ var UNIFIED_MODE = false;
   if (skills) {
     UNLOCKED_SKILLS = skills.split(',').filter(function(s) { return CHART_TYPES[s]; });
     UNIFIED_MODE = true;
-    if (UNLOCKED_SKILLS.length > 0) currentChartType = UNLOCKED_SKILLS[0];
+    var defaultType = params.get('default');
+    if (defaultType === 'all' && UNLOCKED_SKILLS.length > 1) {
+      currentChartType = 'all';
+    } else if (defaultType && CHART_TYPES[defaultType]) {
+      currentChartType = defaultType;
+    } else if (UNLOCKED_SKILLS.length > 0) {
+      currentChartType = UNLOCKED_SKILLS[0];
+    }
   } else if (skill && CHART_TYPES[skill]) {
     UNLOCKED_SKILLS = [skill];
     SKILL_PREFIX = skill + '_';
