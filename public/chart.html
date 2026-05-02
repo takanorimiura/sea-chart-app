@@ -4802,26 +4802,34 @@ function restoreTheme() {
 var lockedToSkill = null;
 
 function init() {
-  // URLパラメータ ?skill=love or ?type=love でTYPEを指定可能（指定なしならread）
   var urlParams = new URLSearchParams(window.location.search);
+  var skillsParam = urlParams.get('skills');
   var skillParam = urlParams.get('skill');
   var typeParam = urlParams.get('type');
+  var defaultParam = urlParams.get('default');
 
-  // ?skill= で指定 → そのスキルにロック
-  // ?type= で指定 → そのタイプで起動（ロックなし）
-  // インフィニティ∞リーディング版: デフォルトは「読」
-  // パラメータなし → read（このファイルは読スキル専用）
-  if (skillParam && CHART_TYPES[skillParam]) {
+  if (UNIFIED_MODE && skillsParam) {
+    // 統合モード: ?skills=ai,read,love&default=all
+    if (defaultParam === 'all' && UNLOCKED_SKILLS.length > 1) {
+      var initType = 'all';
+    } else if (defaultParam && CHART_TYPES[defaultParam]) {
+      var initType = defaultParam;
+    } else if (UNLOCKED_SKILLS.length > 1) {
+      var initType = 'all';
+    } else {
+      var initType = UNLOCKED_SKILLS[0] || 'ai';
+    }
+  } else if (skillParam && CHART_TYPES[skillParam]) {
     lockedToSkill = skillParam;
     var initType = skillParam;
   } else if (typeParam && CHART_TYPES[typeParam]) {
     var initType = typeParam;
   } else {
-    var initType = 'read';
+    var initType = UNLOCKED_SKILLS.length > 0 ? UNLOCKED_SKILLS[0] : 'read';
   }
 
   currentChartType = initType;
-  localStorage.setItem('sea_chart_type', initType);
+  localStorage.setItem(skKey('sea_chart_type'), initType);
   if (initType === 'all') {
     document.getElementById('chartTypeIcon').textContent = 'ALL';
     document.getElementById('chartTypeLabel').textContent = 'Type All';
@@ -4831,9 +4839,11 @@ function init() {
     document.getElementById('chartTypeLabel').textContent = 'Type ' + ctInit.label;
   }
 
-  // スキルロック時はテンプレートを絞り込む（ALLの場合は全表示）
+  // テンプレートフィルタリング
   if (lockedToSkill) {
     filterTemplatesForSkill(lockedToSkill);
+  } else if (UNIFIED_MODE) {
+    filterTemplatesForSkill('all');
   }
 
   restoreTheme();
