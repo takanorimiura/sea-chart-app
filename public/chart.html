@@ -968,6 +968,20 @@ body.dark-theme .tl-date-cell.weekend {
     </button>
   </div>
   <div class="sidebar-section">
+    <h3 id="tmpl-heading-ai" style="display:flex;align-items:center;gap:6px;margin-top:12px;font-size:11px;color:#93bbd4;"><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#93bbd4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M9 15h6"/></svg></span> TYPE AI テンプレート</h3>
+    <button class="template-btn" onclick="loadTemplate('book')" style="border-left:3px solid #93bbd4;">
+      <strong>AI搭載書籍制作フロー</strong>
+      <span>企画→執筆→校正→デザイン→出版</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('marketing')">
+      <strong>マーケティング戦略フロー</strong>
+      <span>分析→LP→SNS→広告→改善</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('website')">
+      <strong>Webサイト構築フロー</strong>
+      <span>要件定義→開発→SEO→公開</span>
+    </button>
+
     <h3 id="tmpl-heading-read" style="display:flex;align-items:center;gap:6px;margin-top:12px;font-size:11px;color:#4A90D9;"><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4A90D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4c2-1 5-1 10 1v16C7 19 4 19 2 20V4z"/><path d="M22 4c-2-1-5-1-10 1v16c5-2 8-2 10-1V4z"/></svg></span> TYPE読 テンプレート</h3>
     <button class="template-btn" onclick="loadTemplate('annual_program')" style="border-left:3px solid #c9a96e;">
       <strong>1年間プログラム全体フロー</strong>
@@ -2976,8 +2990,10 @@ function filterTemplatesForSkill(skill) {
   });
 
   // 見出しの表示/非表示
+  var aiHeading = document.getElementById('tmpl-heading-ai');
   var readHeading = document.getElementById('tmpl-heading-read');
   var loveHeading = document.getElementById('tmpl-heading-love');
+  if (aiHeading) aiHeading.style.display = activeSkills.indexOf('ai') !== -1 ? 'flex' : 'none';
   if (readHeading) readHeading.style.display = activeSkills.indexOf('read') !== -1 ? 'flex' : 'none';
   if (loveHeading) loveHeading.style.display = activeSkills.indexOf('love') !== -1 ? 'flex' : 'none';
 }
