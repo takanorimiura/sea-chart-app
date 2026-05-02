@@ -2702,6 +2702,48 @@ function clearAll() {
 // Templates
 // ============================================
 var TEMPLATES = {
+  // ===== TYPE AI テンプレート =====
+  book: {
+    name: 'AI搭載書籍制作フロー',
+    flow: [
+      { type: 'mission', title: '書籍を1冊出版する', desc: '最終目標：AI搭載DX版書籍の完成' },
+      { type: 'claude', title: '企画・構成設計', desc: 'Claude Codeで書籍の企画書・目次構成を設計' },
+      { type: 'claude', title: '原稿執筆（32章）', desc: 'Claude Codeで全32章の原稿を生成' },
+      { type: 'gemini', title: '校正・ファクトチェック', desc: 'Geminiで校正・事実確認を実施' },
+      { type: 'midjourney', title: '表紙デザイン生成', desc: 'Midjourneyで複数の表紙案を生成' },
+      { type: 'claude', title: 'AIフィードバックシステム設計', desc: '読者向けAI機能の設計・実装' },
+      { type: 'manual', title: '入稿・印刷', desc: '印刷所への入稿・校正刷り確認' },
+      { type: 'output', title: 'AI搭載書籍完成', desc: 'AI搭載DX版書籍の完成・発売' },
+    ]
+  },
+  marketing: {
+    name: 'マーケティング戦略フロー',
+    flow: [
+      { type: 'mission', title: '月商1000万円達成', desc: '売上目標の達成' },
+      { type: 'claude', title: 'ペルソナ分析', desc: 'ターゲット顧客の詳細分析' },
+      { type: 'claude', title: 'コピーライティング', desc: 'LP・広告のコピー作成' },
+      { type: 'midjourney', title: 'バナー画像生成', desc: '広告・SNS用のビジュアル素材' },
+      { type: 'claude', title: 'LP構築', desc: 'ランディングページを構築' },
+      { type: 'chatgpt', title: 'SNS投稿文生成（30日分）', desc: '1ヶ月分のSNSコンテンツを一括生成' },
+      { type: 'manual', title: '広告出稿・運用', desc: 'Meta/Google広告の出稿・運用管理' },
+      { type: 'claude', title: 'データ分析・改善提案', desc: '広告データを分析しPDCAを回す' },
+      { type: 'output', title: 'ROAS 500%達成', desc: '広告費用対効果500%を達成' },
+    ]
+  },
+  website: {
+    name: 'Webサイト構築フロー',
+    flow: [
+      { type: 'mission', title: '企業HPを構築', desc: 'コーポレートサイトの新規構築' },
+      { type: 'claude', title: '要件定義・設計書作成', desc: 'サイト構成・仕様書を作成' },
+      { type: 'claude', title: 'デザイン・コーディング', desc: 'デザイン〜実装を実行' },
+      { type: 'claude', title: 'コンテンツ生成', desc: '各ページのテキストコンテンツを生成' },
+      { type: 'midjourney', title: 'ビジュアル素材生成', desc: 'ヒーロー画像・アイコン等を生成' },
+      { type: 'chatgpt', title: 'SEO最適化', desc: 'メタタグ・構造化データの最適化' },
+      { type: 'manual', title: 'デプロイ・公開', desc: 'サーバー設定・DNS・SSL対応・公開' },
+      { type: 'output', title: 'HP完成', desc: '企業ホームページ完成・運用開始' },
+    ]
+  },
+  // ===== TYPE読 テンプレート =====
   aihyper: {
     name: 'AIハイパーリーディング',
     flow: [
