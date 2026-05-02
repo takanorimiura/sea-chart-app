@@ -6,7 +6,6 @@
 <title>SEA-CHART - 海の出版社</title>
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 /* Lucide fallback - SVGインラインアイコン */
 .cat-icon {
@@ -972,31 +971,58 @@ body.dark-theme .tl-date-cell.weekend {
     <h3 style="display:flex;align-items:center;gap:6px;"><span class="cat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span>テンプレート</h3>
     <div id="builtinTemplates"></div>
     <script>
-    (function(){
+    function renderBuiltinTemplates() {
+      var aiTemplates = [
+        { key:'book', title:'AI搭載書籍制作フロー', desc:'企画→執筆→校正→デザイン→出版', skill:'ai' },
+        { key:'marketing', title:'マーケティング戦略フロー', desc:'分析→LP→SNS→広告→改善', skill:'ai' },
+        { key:'website', title:'Webサイト構築フロー', desc:'要件定義→開発→SEO→公開', skill:'ai' },
+      ];
       var loveTemplates = [
-        { key:'love_roadmap', title:'恋愛成就ロードマップ', desc:'自己理解→出会い→交際→成就' },
-        { key:'encounter_flow', title:'出会い→交際フロー', desc:'マッチングから告白まで' },
-        { key:'line_strategy', title:'LINE攻略フロー', desc:'メッセージ戦略の設計' },
-        { key:'self_improvement', title:'自分磨き計画', desc:'秘めフォト×絶対麗度連携' },
-        { key:'himephoto_journey', title:'秘めフォト ステップアップ', desc:'初回→プレミアム→シネマ→ウェディング' },
-        { key:'conflict_resolution', title:'喧嘩修復フロー', desc:'すれ違い→仲直り→関係強化' },
+        { key:'love_roadmap', title:'恋愛成就ロードマップ', desc:'自己理解→出会い→交際→成就', skill:'love' },
+        { key:'encounter_flow', title:'出会い→交際フロー', desc:'マッチングから告白まで', skill:'love' },
+        { key:'line_strategy', title:'LINE攻略フロー', desc:'メッセージ戦略の設計', skill:'love' },
+        { key:'self_improvement', title:'自分磨き計画', desc:'秘めフォト×絶対麗度連携', skill:'love' },
+        { key:'himephoto_journey', title:'秘めフォト ステップアップ', desc:'初回→プレミアム→シネマ→ウェディング', skill:'love' },
+        { key:'conflict_resolution', title:'喧嘩修復フロー', desc:'すれ違い→仲直り→関係強化', skill:'love' },
       ];
-      var defaultTemplates = [
-        { key:'book', title:'AI搭載書籍制作フロー', desc:'企画→執筆→校正→デザイン→出版' },
-        { key:'marketing', title:'マーケティング戦略フロー', desc:'分析→LP→SNS→広告→改善' },
-        { key:'website', title:'Webサイト構築フロー', desc:'要件定義→開発→SEO→公開' },
+      var readTemplates = [
+        { key:'annual_program', title:'1年間プログラム全体フロー', desc:'覚醒→加速→深化→統合→∞', skill:'read' },
+        { key:'monthly_read8', title:'毎月のREAD 8サイクル', desc:'選書→精読→記録→融合→無地思考', skill:'read' },
+        { key:'infinity_road', title:'∞リーディングに至る道', desc:'習慣化→8要素→閾値突破→創造者', skill:'read' },
+        { key:'aihyper', title:'AIハイパーリーディング', desc:'AI×読書の実践フロー', skill:'read' },
+        { key:'read8', title:'READ 8 プロジェクト', desc:'8冊の戦略的選書→融合', skill:'read' },
+        { key:'readingnote', title:'READING NOTE完全活用', desc:'記録→AI添削→行動→資産化', skill:'read' },
+        { key:'mujithinking', title:'無地思考ワークショップ', desc:'白紙→化学反応→次元上昇', skill:'read' },
       ];
-      var skill = new URLSearchParams(window.location.search).get('skill');
-      var list = (skill === 'love') ? loveTemplates : defaultTemplates;
+      var allTemplates = [].concat(aiTemplates, readTemplates, loveTemplates);
+
       var container = document.getElementById('builtinTemplates');
-      list.forEach(function(t){
+      container.innerHTML = '';
+
+      // 解放済みスキルに応じてフィルタリング
+      var visible = allTemplates.filter(function(t) {
+        return UNLOCKED_SKILLS.indexOf(t.skill) !== -1;
+      });
+
+      // スキルごとにグループ化して表示
+      var currentSkill = '';
+      visible.forEach(function(t) {
+        if (t.skill !== currentSkill && UNLOCKED_SKILLS.length > 1) {
+          currentSkill = t.skill;
+          var label = CHART_TYPES[t.skill] ? CHART_TYPES[t.skill].label : t.skill;
+          var heading = document.createElement('div');
+          heading.style.cssText = 'font-size:10px;color:var(--text-secondary);padding:8px 8px 4px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border-top:1px solid var(--glass-border);margin-top:4px;';
+          heading.textContent = 'TYPE ' + label;
+          container.appendChild(heading);
+        }
         var btn = document.createElement('button');
         btn.className = 'template-btn';
         btn.onclick = function(){ loadTemplate(t.key); };
         btn.innerHTML = '<strong>' + t.title + '</strong><span>' + t.desc + '</span>';
         container.appendChild(btn);
       });
-    })();
+    }
+    renderBuiltinTemplates();
     </script>
     <div id="customTemplates"></div>
   </div>
@@ -1253,23 +1279,87 @@ const CHART_TYPES = {
 var currentChartType = 'ai';
 
 // ============================================
-// スキル別localStorage分離
-// URLパラメータ ?skill=ai / ?skill=read 等でスキルを指定
-// 各スキルのCOCKPITから呼ばれるとき、データが完全に分離される
+// スキル解放システム（統合モード対応）
+// ?skills=ai,read,love — 複数スキル解放（統合モード）
+// ?skill=ai — 単一スキル（後方互換・個別COCKPITから）
+// パラメータなし — 全スキル解放（スタンドアロン）
 // ============================================
 var SKILL_PREFIX = '';
+var UNLOCKED_SKILLS = [];
+var UNIFIED_MODE = false;
 (function() {
   var params = new URLSearchParams(window.location.search);
-  var skill = params.get('skill');
-  if (skill && CHART_TYPES[skill]) {
+  var skills = params.get('skills');  // 統合モード
+  var skill = params.get('skill');    // 後方互換
+
+  if (skills) {
+    UNLOCKED_SKILLS = skills.split(',').filter(function(s) { return CHART_TYPES[s]; });
+    UNIFIED_MODE = true;
+    if (UNLOCKED_SKILLS.length > 0) currentChartType = UNLOCKED_SKILLS[0];
+  } else if (skill && CHART_TYPES[skill]) {
+    UNLOCKED_SKILLS = [skill];
     SKILL_PREFIX = skill + '_';
-    currentChartType = skill; // そのスキルをデフォルトタイプに
+    currentChartType = skill;
+  } else {
+    // パラメータなし = 全解放
+    UNLOCKED_SKILLS = Object.keys(CHART_TYPES);
+    UNIFIED_MODE = true;
   }
 })();
 
+// postMessageでスキル動的更新
+window.addEventListener('message', function(event) {
+  if (event.data && event.data.type === 'update-skills' && Array.isArray(event.data.skills)) {
+    UNLOCKED_SKILLS = event.data.skills.filter(function(s) { return CHART_TYPES[s]; });
+    UNIFIED_MODE = true;
+    SKILL_PREFIX = '';
+    if (UNLOCKED_SKILLS.length > 0 && !UNLOCKED_SKILLS.includes(currentChartType)) {
+      currentChartType = UNLOCKED_SKILLS[0];
+    }
+    // UIを再描画
+    if (typeof buildPalette === 'function') buildPalette();
+    if (typeof renderTypeMenu === 'function') renderTypeMenu();
+  }
+});
+
 function skKey(baseKey) {
+  if (UNIFIED_MODE) return baseKey;  // 統合モード: プレフィックスなし
   return SKILL_PREFIX + baseKey;
 }
+
+// localStorage移行: プレフィックス付きデータを統合
+(function migrateToUnified() {
+  if (!UNIFIED_MODE) return;
+  if (localStorage.getItem('sea_chart_unified_migrated')) return;
+
+  var prefixes = ['ai_', 'read_', 'love_', 'biz_', 'write_', 'create_', 'health_', 'think_'];
+  var existingRaw = localStorage.getItem('ai_mm_projects');
+  var existing = {};
+  try { if (existingRaw) existing = JSON.parse(existingRaw); } catch(e) {}
+
+  var migrated = 0;
+  prefixes.forEach(function(prefix) {
+    var raw = localStorage.getItem(prefix + 'ai_mm_projects');
+    if (!raw) return;
+    try {
+      var projects = JSON.parse(raw);
+      var skillLabel = prefix.replace('_', '').toUpperCase();
+      Object.keys(projects).forEach(function(key) {
+        var newKey = prefix + key;
+        if (!existing[newKey]) {
+          existing[newKey] = JSON.parse(JSON.stringify(projects[key]));
+          existing[newKey].name = '[' + skillLabel + '] ' + (existing[newKey].name || '');
+          migrated++;
+        }
+      });
+    } catch(e) {}
+  });
+
+  if (migrated > 0) {
+    localStorage.setItem('ai_mm_projects', JSON.stringify(existing));
+  }
+  localStorage.setItem('sea_chart_unified_migrated', '1');
+})();
 
 // タイプ別ノード定義
 const NODE_TYPES_BY_CHART = {};
@@ -4045,35 +4135,26 @@ function renderTypeMenu() {
   var menu = document.getElementById('typeMenu');
   var html = '<div style="font-size:11px;color:var(--text-secondary);padding:4px 8px 8px;font-weight:600;">表示するスキルを選択</div>';
 
-  // ?skill= パラメータがある場合、そのスキルだけに制限
-  var skillParam = new URLSearchParams(window.location.search).get('skill');
-  var isSkillLocked = !!skillParam;
+  // 解放済みスキルの判定（UNLOCKED_SKILLSを使用）
+  var hasMultipleSkills = UNLOCKED_SKILLS.length > 1;
 
-  // 「すべて表示」オプション（スキル制限時は非表示、全TYPE解放時のみ表示）
-  var showAll = !isSkillLocked && (typeof isTypeUnlocked !== 'function' || isTypeUnlocked('all') || unlockedSkills.length === Object.keys(CHART_TYPES).length);
-  if (showAll) {
+  // 「すべて表示」オプション（複数スキル解放時のみ表示）
+  if (hasMultipleSkills) {
     var isAll = currentChartType === 'all';
     html += '<div onclick="switchChartType(\'all\')" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;cursor:pointer;margin-bottom:4px;transition:all 0.15s;' +
       (isAll ? 'background:rgba(147,187,212,0.15);border:1px solid #93bbd4;' : 'background:transparent;border:1px solid transparent;') +
       '" onmouseover="if(!' + isAll + ')this.style.background=\'rgba(147,187,212,0.08)\'" onmouseout="if(!' + isAll + ')this.style.background=\'transparent\'">';
     html += '<div style="width:28px;height:28px;border-radius:6px;background:#93bbd4;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;">ALL</div>';
     html += '<div><div style="font-size:13px;font-weight:' + (isAll ? '600' : '400') + ';color:var(--text-primary);">Type All</div>';
-    html += '<div style="font-size:10px;color:var(--text-secondary);">全スキルのノードを表示</div></div>';
+    html += '<div style="font-size:10px;color:var(--text-secondary);">解放済みスキルを統合表示</div></div>';
     if (isAll) html += '<span style="margin-left:auto;color:#93bbd4;font-size:14px;">✓</span>';
     html += '</div>';
   }
 
   html += '<div style="height:1px;background:var(--glass-border);margin:4px 0;"></div>';
 
-  // スキル制限: ?skill= パラメータ or 購入済みTYPEで判定
-  var unlockedSkills;
-  if (isSkillLocked) {
-    unlockedSkills = [skillParam];
-  } else if (typeof isTypeUnlocked === 'function') {
-    unlockedSkills = Object.keys(CHART_TYPES).filter(function(k) { return isTypeUnlocked(k); });
-  } else {
-    unlockedSkills = Object.keys(CHART_TYPES);
-  }
+  // UNLOCKED_SKILLSに基づいてスキルの解放/ロックを判定
+  var unlockedSkills = UNLOCKED_SKILLS.length > 0 ? UNLOCKED_SKILLS : Object.keys(CHART_TYPES);
 
   Object.entries(CHART_TYPES).forEach(function(entry) {
     var key = entry[0];
@@ -5050,416 +5131,6 @@ init();
 
   // チュートリアル開始（少し遅延させてキャンバスが描画された後に）
   setTimeout(showTutorial, 800);
-})();
-</script>
-
-<!-- ============================================ -->
-<!-- LOGIN MODAL -->
-<!-- ============================================ -->
-<div id="authOverlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:99999;display:none;align-items:center;justify-content:center;font-family:'Noto Sans JP','Source Sans 3',sans-serif;">
-  <div style="background:#1a2332;border:1px solid rgba(147,187,212,0.3);border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
-    <div style="font-size:28px;font-weight:700;color:#93bbd4;margin-bottom:4px;letter-spacing:2px;">SEA-CHART</div>
-    <div style="font-size:12px;color:#718096;margin-bottom:24px;letter-spacing:1px;">海の出版社 ワークフロー設計ツール</div>
-
-    <div id="authError" style="display:none;background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.3);border-radius:8px;padding:10px;margin-bottom:16px;color:#FF6B6B;font-size:13px;"></div>
-
-    <!-- Login Form -->
-    <div id="loginForm">
-      <input id="authEmail" type="email" placeholder="メールアドレス" style="width:100%;padding:12px 16px;background:#0d1520;border:1px solid rgba(147,187,212,0.25);border-radius:8px;color:#e2e8f0;font-size:14px;margin-bottom:10px;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#93bbd4'" onblur="this.style.borderColor='rgba(147,187,212,0.25)'" />
-      <input id="authPassword" type="password" placeholder="パスワード" style="width:100%;padding:12px 16px;background:#0d1520;border:1px solid rgba(147,187,212,0.25);border-radius:8px;color:#e2e8f0;font-size:14px;margin-bottom:16px;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#93bbd4'" onblur="this.style.borderColor='rgba(147,187,212,0.25)'" onkeydown="if(event.key==='Enter')doLogin()" />
-      <button onclick="doLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7AAEC5,#93bbd4);border:none;border-radius:8px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:12px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">ログイン</button>
-      <div style="color:#718096;font-size:13px;">
-        アカウントをお持ちでない方は
-        <a href="javascript:void(0)" onclick="showSignup()" style="color:#93bbd4;text-decoration:none;font-weight:500;">新規登録</a>
-      </div>
-    </div>
-
-    <!-- Signup Form -->
-    <div id="signupForm" style="display:none;">
-      <input id="signupName" type="text" placeholder="表示名" style="width:100%;padding:12px 16px;background:#0d1520;border:1px solid rgba(147,187,212,0.25);border-radius:8px;color:#e2e8f0;font-size:14px;margin-bottom:10px;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#93bbd4'" onblur="this.style.borderColor='rgba(147,187,212,0.25)'" />
-      <input id="signupEmail" type="email" placeholder="メールアドレス" style="width:100%;padding:12px 16px;background:#0d1520;border:1px solid rgba(147,187,212,0.25);border-radius:8px;color:#e2e8f0;font-size:14px;margin-bottom:10px;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#93bbd4'" onblur="this.style.borderColor='rgba(147,187,212,0.25)'" />
-      <input id="signupPassword" type="password" placeholder="パスワード（6文字以上）" style="width:100%;padding:12px 16px;background:#0d1520;border:1px solid rgba(147,187,212,0.25);border-radius:8px;color:#e2e8f0;font-size:14px;margin-bottom:16px;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#93bbd4'" onblur="this.style.borderColor='rgba(147,187,212,0.25)'" onkeydown="if(event.key==='Enter')doSignup()" />
-      <button onclick="doSignup()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7AAEC5,#93bbd4);border:none;border-radius:8px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:12px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">新規登録</button>
-      <div style="color:#718096;font-size:13px;">
-        アカウントをお持ちの方は
-        <a href="javascript:void(0)" onclick="showLogin()" style="color:#93bbd4;text-decoration:none;font-weight:500;">ログイン</a>
-      </div>
-    </div>
-
-    <!-- Access Code -->
-    <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(147,187,212,0.15);">
-      <div style="color:#718096;font-size:12px;margin-bottom:8px;">書籍付属のアクセスコードをお持ちの方</div>
-      <div style="display:flex;gap:8px;">
-        <input id="accessCodeInput" type="text" placeholder="アクセスコード" style="flex:1;padding:10px 12px;background:#0d1520;border:1px solid rgba(147,187,212,0.25);border-radius:8px;color:#e2e8f0;font-size:13px;box-sizing:border-box;outline:none;text-transform:uppercase;" onfocus="this.style.borderColor='#93bbd4'" onblur="this.style.borderColor='rgba(147,187,212,0.25)'" />
-        <button onclick="activateCode()" style="padding:10px 16px;background:rgba(147,187,212,0.15);border:1px solid rgba(147,187,212,0.3);border-radius:8px;color:#93bbd4;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;">適用</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================ -->
-<!-- CLOUD SYNC INDICATOR -->
-<!-- ============================================ -->
-<div id="cloudSyncBadge" style="display:none;position:fixed;bottom:16px;right:16px;z-index:9998;background:rgba(26,35,50,0.95);border:1px solid rgba(147,187,212,0.25);border-radius:20px;padding:6px 14px;font-size:11px;color:#93bbd4;font-family:'Source Sans 3',sans-serif;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);" onclick="showUserMenu()">
-  <span id="syncIcon">☁️</span> <span id="syncUserName"></span>
-</div>
-
-<!-- User Menu -->
-<div id="userMenu" style="display:none;position:fixed;bottom:48px;right:16px;z-index:9999;background:#1a2332;border:1px solid rgba(147,187,212,0.25);border-radius:10px;padding:8px;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,0.4);font-family:'Noto Sans JP',sans-serif;">
-  <div id="userMenuEmail" style="padding:10px 12px;color:#718096;font-size:12px;border-bottom:1px solid rgba(147,187,212,0.15);margin-bottom:4px;"></div>
-  <div id="userMenuTypes" style="padding:8px 12px;font-size:12px;color:#93bbd4;border-bottom:1px solid rgba(147,187,212,0.15);margin-bottom:4px;"></div>
-  <div onclick="syncNow()" style="padding:10px 12px;color:#e2e8f0;font-size:13px;cursor:pointer;border-radius:6px;transition:background 0.2s;" onmouseover="this.style.background='rgba(147,187,212,0.1)'" onmouseout="this.style.background='none'">☁️ クラウド同期</div>
-  <div onclick="doLogout()" style="padding:10px 12px;color:#FF6B6B;font-size:13px;cursor:pointer;border-radius:6px;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,107,107,0.1)'" onmouseout="this.style.background='none'">ログアウト</div>
-</div>
-
-<script>
-// ============================================
-// SUPABASE INTEGRATION
-// ============================================
-(function() {
-  var SUPABASE_URL = 'https://zptewkjcjhfwljfpkyll.supabase.co';
-  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwdGV3a2pjamhmd2xqZnBreWxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NTM1ODMsImV4cCI6MjA5MjUyOTU4M30.TjOlS49t0WOFcEI5vb0WgWh8Y74LwO0V-FWrD61HVVk';
-
-  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  var currentUser = null;
-  var purchasedTypes = [];
-  var _saveDebounce = null;
-
-  // デフォルトで誰でも使えるノードタイプ（TYPE 0 = 基本）
-  var FREE_NODE_TYPES = ['mission', 'output', 'manual', 'custom', '成果物'];
-
-  // ---- Auth UI Helpers ----
-  window.showLogin = function() {
-    document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('signupForm').style.display = 'none';
-    document.getElementById('authError').style.display = 'none';
-  };
-  window.showSignup = function() {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('signupForm').style.display = 'block';
-    document.getElementById('authError').style.display = 'none';
-  };
-  function showAuthError(msg) {
-    var el = document.getElementById('authError');
-    el.textContent = msg;
-    el.style.display = 'block';
-  }
-
-  // ---- Login ----
-  window.doLogin = async function() {
-    var email = document.getElementById('authEmail').value.trim();
-    var password = document.getElementById('authPassword').value;
-    if (!email || !password) { showAuthError('メールアドレスとパスワードを入力してください'); return; }
-    var res = await sb.auth.signInWithPassword({ email: email, password: password });
-    if (res.error) { showAuthError(res.error.message); return; }
-    currentUser = res.data.user;
-    onAuthSuccess();
-  };
-
-  // ---- Signup ----
-  window.doSignup = async function() {
-    var name = document.getElementById('signupName').value.trim();
-    var email = document.getElementById('signupEmail').value.trim();
-    var password = document.getElementById('signupPassword').value;
-    if (!email || !password) { showAuthError('メールアドレスとパスワードを入力してください'); return; }
-    if (password.length < 6) { showAuthError('パスワードは6文字以上にしてください'); return; }
-    var res = await sb.auth.signUp({
-      email: email,
-      password: password,
-      options: { data: { display_name: name || email.split('@')[0] } }
-    });
-    if (res.error) { showAuthError(res.error.message); return; }
-    currentUser = res.data.user;
-    onAuthSuccess();
-  };
-
-  // ---- Logout ----
-  window.doLogout = async function() {
-    await sb.auth.signOut();
-    currentUser = null;
-    purchasedTypes = [];
-    document.getElementById('cloudSyncBadge').style.display = 'none';
-    document.getElementById('userMenu').style.display = 'none';
-    document.getElementById('authOverlay').style.display = 'flex';
-  };
-
-  // ---- User Menu ----
-  window.showUserMenu = function() {
-    var menu = document.getElementById('userMenu');
-    if (menu.style.display === 'none') {
-      menu.style.display = 'block';
-      document.getElementById('userMenuEmail').textContent = currentUser ? currentUser.email : '';
-      var typesStr = purchasedTypes.length > 0
-        ? '解放済みTYPE: ' + purchasedTypes.map(function(t) {
-            var ct = CHART_TYPES[t];
-            return ct ? ct.label : t;
-          }).join(' ')
-        : 'TYPE未購入（基本ノードのみ）';
-      document.getElementById('userMenuTypes').textContent = typesStr;
-    } else {
-      menu.style.display = 'none';
-    }
-  };
-
-  // Close user menu on outside click
-  document.addEventListener('click', function(e) {
-    var menu = document.getElementById('userMenu');
-    var badge = document.getElementById('cloudSyncBadge');
-    if (menu.style.display === 'block' && !menu.contains(e.target) && !badge.contains(e.target)) {
-      menu.style.display = 'none';
-    }
-  });
-
-  // ---- Access Code ----
-  window.activateCode = async function() {
-    var code = document.getElementById('accessCodeInput').value.trim().toUpperCase();
-    if (!code) { showAuthError('アクセスコードを入力してください'); return; }
-    if (!currentUser) { showAuthError('先にログインまたは新規登録してください'); return; }
-
-    // Check code validity
-    var codeRes = await sb.from('access_codes').select('*').eq('code', code).single();
-    if (codeRes.error || !codeRes.data) { showAuthError('無効なアクセスコードです'); return; }
-
-    var codeData = codeRes.data;
-    if (codeData.used_count >= codeData.max_uses) { showAuthError('このコードは使用上限に達しています'); return; }
-
-    // Check if already used by this user
-    var useCheck = await sb.from('access_code_uses').select('id').eq('code', code).eq('user_id', currentUser.id);
-    if (useCheck.data && useCheck.data.length > 0) { showAuthError('このコードは既に使用済みです'); return; }
-
-    // Activate: record use
-    await sb.from('access_code_uses').insert({ code: code, user_id: currentUser.id });
-
-    // Grant types
-    var typesToGrant = codeData.unlock_types || [];
-    for (var i = 0; i < typesToGrant.length; i++) {
-      await sb.from('purchased_types').upsert({
-        user_id: currentUser.id,
-        type_key: typesToGrant[i],
-        source: 'access_code'
-      }, { onConflict: 'user_id,type_key' });
-    }
-
-    // Reload purchased types
-    await loadPurchasedTypes();
-    showAuthError(''); // clear
-    document.getElementById('authError').style.display = 'none';
-    showToast('アクセスコード「' + code + '」を適用しました！');
-
-    // If types were granted, rebuild palette
-    if (typesToGrant.length > 0) {
-      buildPalette();
-    }
-  };
-
-  // ---- Auth Success ----
-  async function onAuthSuccess() {
-    document.getElementById('authOverlay').style.display = 'none';
-    document.getElementById('cloudSyncBadge').style.display = 'block';
-
-    var name = '';
-    if (currentUser.user_metadata && currentUser.user_metadata.display_name) {
-      name = currentUser.user_metadata.display_name;
-    } else {
-      name = currentUser.email.split('@')[0];
-    }
-    document.getElementById('syncUserName').textContent = name;
-
-    await loadPurchasedTypes();
-    buildPalette(); // Rebuild palette with type restrictions
-    await loadCloudProjects();
-  }
-
-  // ---- Purchased Types ----
-  async function loadPurchasedTypes() {
-    if (!currentUser) return;
-    var res = await sb.from('purchased_types').select('type_key').eq('user_id', currentUser.id);
-    purchasedTypes = (res.data || []).map(function(d) { return d.type_key; });
-  }
-
-  window.isTypeUnlocked = function(typeKey) {
-    if (!currentUser) return false;
-    if (purchasedTypes.indexOf('all') >= 0) return true;
-    return purchasedTypes.indexOf(typeKey) >= 0;
-  };
-
-  window.isNodeAllowed = function(nodeType) {
-    if (FREE_NODE_TYPES.indexOf(nodeType) >= 0) return true;
-    // Check if the node belongs to an unlocked type
-    for (var chartType in NODE_TYPES_BY_CHART) {
-      if (NODE_TYPES_BY_CHART[chartType][nodeType]) {
-        if (isTypeUnlocked(chartType)) return true;
-      }
-    }
-    return false;
-  };
-
-  // ---- Cloud Save ----
-  window.saveProjectToCloud = async function(data) {
-    if (!currentUser) return;
-    var name = data.name || 'untitled';
-    var skill = SKILL_PREFIX ? SKILL_PREFIX.replace('_', '') : '';
-
-    // Upsert: if project with same name+skill exists, update it
-    var existing = await sb.from('sea_chart_projects')
-      .select('id')
-      .eq('user_id', currentUser.id)
-      .eq('skill', skill)
-      .eq('name', name)
-      .limit(1);
-
-    if (existing.data && existing.data.length > 0) {
-      await sb.from('sea_chart_projects')
-        .update({ data: data, updated_at: new Date().toISOString() })
-        .eq('id', existing.data[0].id);
-    } else {
-      await sb.from('sea_chart_projects')
-        .insert({ user_id: currentUser.id, skill: skill, name: name, data: data });
-    }
-
-    document.getElementById('syncIcon').textContent = '✅';
-    setTimeout(function() { document.getElementById('syncIcon').textContent = '☁️'; }, 2000);
-  };
-
-  // Debounced cloud save (called from saveProject)
-  window.debouncedCloudSave = function(data) {
-    if (_saveDebounce) clearTimeout(_saveDebounce);
-    _saveDebounce = setTimeout(function() {
-      saveProjectToCloud(data);
-    }, 2000); // 2秒後に自動クラウド保存
-  };
-
-  // ---- Cloud Load ----
-  async function loadCloudProjects() {
-    if (!currentUser) return;
-    var skill = SKILL_PREFIX ? SKILL_PREFIX.replace('_', '') : '';
-    var res = await sb.from('sea_chart_projects')
-      .select('*')
-      .eq('user_id', currentUser.id)
-      .eq('skill', skill)
-      .order('updated_at', { ascending: false });
-
-    if (res.data && res.data.length > 0) {
-      // Sync cloud projects to localStorage for offline use
-      var list = getProjectList();
-      res.data.forEach(function(p) {
-        var key = skKey('ai_mm_') + p.name.replace(/[^a-zA-Z0-9\u3040-\u9fff]/g, '_');
-        localStorage.setItem(key, JSON.stringify(p.data));
-        list[key] = { name: p.name, updated: p.updated_at, cloud_id: p.id };
-      });
-      saveProjectList(list);
-      renderMyProjects();
-
-      // Auto-load most recent
-      var mostRecent = res.data[0];
-      if (mostRecent && mostRecent.data) {
-        loadProjectData(mostRecent.data);
-        showToast('クラウドからプロジェクトを読み込みました');
-      }
-    }
-  }
-
-  // ---- Sync Now ----
-  window.syncNow = async function() {
-    document.getElementById('syncIcon').textContent = '🔄';
-    document.getElementById('userMenu').style.display = 'none';
-    try {
-      var data = getProjectData();
-      await saveProjectToCloud(data);
-      await loadCloudProjects();
-      showToast('クラウド同期が完了しました');
-    } catch(e) {
-      showToast('同期に失敗しました');
-    }
-    document.getElementById('syncIcon').textContent = '☁️';
-  };
-
-  // ---- Init: Check Auth on Load ----
-  async function initAuth() {
-    // Check for existing session
-    var session = await sb.auth.getSession();
-    if (session.data && session.data.session) {
-      currentUser = session.data.session.user;
-      onAuthSuccess();
-    } else {
-      // Check if embedded in iframe with parent auth
-      var params = new URLSearchParams(window.location.search);
-      var userId = params.get('user_id');
-      if (userId) {
-        // Embedded mode: trust parent's user ID
-        currentUser = { id: userId, email: 'embedded@user', user_metadata: { display_name: 'ユーザー' } };
-        onAuthSuccess();
-      } else {
-        // Show login
-        document.getElementById('authOverlay').style.display = 'flex';
-      }
-    }
-
-    // Listen for auth state changes
-    sb.auth.onAuthStateChange(function(event, session) {
-      if (event === 'SIGNED_OUT') {
-        currentUser = null;
-        purchasedTypes = [];
-      }
-    });
-
-    // Listen for postMessage auth from parent (iframe embedding)
-    window.addEventListener('message', function(event) {
-      if (event.data && event.data.type === 'sea-chart-auth') {
-        currentUser = { id: event.data.user_id, email: event.data.email || '', user_metadata: { display_name: event.data.display_name || '' } };
-        if (event.data.purchased_types) {
-          purchasedTypes = event.data.purchased_types;
-        }
-        onAuthSuccess();
-      }
-    });
-  }
-
-  // ---- Hook into existing saveProject ----
-  var _origSaveProject = window.saveProject;
-  window.saveProject = function() {
-    _origSaveProject(); // Call original (saves to localStorage)
-    // Also save to cloud
-    var data = getProjectData();
-    debouncedCloudSave(data);
-  };
-
-  // ---- Override buildPalette to add lock icons ----
-  var _origBuildPalette = window.buildPalette;
-  window.buildPalette = function() {
-    _origBuildPalette(); // Call original
-
-    // Add lock overlay to restricted nodes
-    if (!currentUser) return;
-    var paletteItems = document.querySelectorAll('.palette-item');
-    paletteItems.forEach(function(item) {
-      var nodeType = item.getAttribute('data-type');
-      if (!nodeType) return;
-      if (FREE_NODE_TYPES.indexOf(nodeType) >= 0) return; // Always free
-
-      if (!isNodeAllowed(nodeType)) {
-        item.style.opacity = '0.35';
-        item.style.pointerEvents = 'none';
-        item.style.position = 'relative';
-        // Add lock icon
-        if (!item.querySelector('.lock-badge')) {
-          var lock = document.createElement('span');
-          lock.className = 'lock-badge';
-          lock.textContent = '🔒';
-          lock.style.cssText = 'position:absolute;top:2px;right:4px;font-size:10px;';
-          item.appendChild(lock);
-        }
-      } else {
-        item.style.opacity = '1';
-        item.style.pointerEvents = 'auto';
-        var existingLock = item.querySelector('.lock-badge');
-        if (existingLock) existingLock.remove();
-      }
-    });
-  };
-
-  // Start auth check
-  initAuth();
 })();
 </script>
 </body>
