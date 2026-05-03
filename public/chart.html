@@ -3291,11 +3291,16 @@ document.getElementById('helpModal').addEventListener('click', function(e) {
 // ============================================
 // API calls go through COCKPIT backend
 const COCKPIT_API_BASE = (function() {
-  // 統合モード or Vercelデプロイ時はai-pilot-cockpitのAPIを使用
-  if (window.location.hostname !== 'localhost') {
+  if (window.location.hostname === 'localhost') {
+    return 'http://localhost:8003';
+  }
+  var origin = window.location.origin;
+  // sea-chart-appにはgenerate APIがないので、ai-pilot-cockpitを使用
+  if (origin.includes('sea-chart-app')) {
     return 'https://ai-pilot-cockpit.vercel.app';
   }
-  return 'http://localhost:8003';
+  // 各COCKPITアプリ内では自分自身のAPIを使う（CORS回避）
+  return origin;
 })();
 
 const AI_SYSTEM_PROMPT = `あなたは目標達成ワークフロー設計の専門家です。ユーザーのBefore（現状）とAfter（ゴール）のギャップを分析し、最適なステップを設計してください。
