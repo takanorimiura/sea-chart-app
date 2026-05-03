@@ -1648,15 +1648,22 @@ function mergeAllNodeTypes() {
   NODE_TYPES.manual = { label: '手動作業', short: '手', color: '#6B7280', desc: '人間の作業', category: 'zz_manual' };
   NODE_TYPES.custom = { label: 'カスタム', short: '＋', color: '#FFFFFF', desc: '自由入力', category: 'zz_custom' };
 
-  // 各タイプのノードを追加
-  Object.entries(NODE_TYPES_BY_CHART).forEach(function(entry) {
-    var chartType = entry[0];
-    var chartNodes = entry[1];
+  // 共通AIノード（複数スキルで重複定義されるもの）
+  var commonAINodes = ['claude','chatgpt','gemini','perplexity','grok','midjourney','chatgptimg','imagen','stablediff','firefly','flux','nanobanana','grokimg','sora','runway','kling','pika','veo','grokvid','suno','udio','musicfx','claudecode','copilot','cursor','replit','manus','genspark','claudecowork','claudecodeagent','antigravity','gamma','napkin','notebooklm','notionai'];
+
+  // 各タイプのノードを追加（AIタイプを最初に処理して共通ノードの所属を確定）
+  var mergeOrder = ['ai','biz','write','read','love','create','health','think'];
+  mergeOrder.forEach(function(chartType) {
+    var chartNodes = NODE_TYPES_BY_CHART[chartType];
+    if (!chartNodes) return;
     Object.entries(chartNodes).forEach(function(nodeEntry) {
       var key = nodeEntry[0];
       var val = nodeEntry[1];
       if (key === 'mission' || key === 'current' || key === 'output' || key === 'manual' || key === 'custom') return;
-      // 読タイプはオリジナルのカテゴリを保持（細分化表示のため）
+
+      // 共通AIノードは最初の定義（AIタイプ）を優先し、後から上書きしない
+      if (commonAINodes.indexOf(key) !== -1 && NODE_TYPES[key]) return;
+
       if (chartType === 'read') {
         NODE_TYPES[key] = Object.assign({}, val);
       } else {
@@ -1833,7 +1840,8 @@ function renderNode(id) {
 
   // スキルタイプの枠色とラベルを判定
   var skillCategory = info.category || '';
-  var skillType = skillCategory.replace('type_', '');
+  var aiCategories = ['chat','image','video','audio','code','agent','ppt','research','type_ai'];
+  var skillType = aiCategories.indexOf(skillCategory) !== -1 ? 'ai' : skillCategory.replace('type_', '');
   var skillInfo = CHART_TYPES[skillType];
   var isCommonNode = (n.type === 'mission' || n.type === 'current' || n.type === 'output' || n.type === 'manual' || n.type === 'custom');
   var skillLabelHtml = '';
