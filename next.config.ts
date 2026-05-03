@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors 'self' https://sea-publishing.com https://*.sea-publishing.com https://seaside-pub.com https://*.seaside-pub.com",
+            value: "frame-ancestors 'self' https://sea-publishing.com https://*.sea-publishing.com https://seaside-pub.com https://*.seaside-pub.com https://ai-pilot-cockpit.vercel.app https://infinity-reading-ai.vercel.app https://sea-learning-love.vercel.app https://*.vercel.app",
           },
         ],
       },
