@@ -3282,7 +3282,13 @@ document.getElementById('helpModal').addEventListener('click', function(e) {
 // AI提案機能（Claude API連携）
 // ============================================
 // API calls go through COCKPIT backend
-const COCKPIT_API_BASE = 'http://localhost:8003';
+const COCKPIT_API_BASE = (function() {
+  // 統合モード or Vercelデプロイ時はai-pilot-cockpitのAPIを使用
+  if (window.location.hostname !== 'localhost') {
+    return 'https://ai-pilot-cockpit.vercel.app';
+  }
+  return 'http://localhost:8003';
+})();
 
 const AI_SYSTEM_PROMPT = `あなたは目標達成ワークフロー設計の専門家です。ユーザーのBefore（現状）とAfter（ゴール）のギャップを分析し、最適なステップを設計してください。
 
