@@ -218,6 +218,27 @@ body {
 }
 .toolbar-btn:hover { background: rgba(196,160,106,0.15); color: var(--gold-primary); border-color: var(--gold-primary); }
 .toolbar-btn.accent { background: rgba(196,160,106,0.15); color: var(--gold-primary); border-color: rgba(196,160,106,0.4); }
+.toolbar-btn { position: relative; }
+.toolbar-btn::after {
+  content: attr(title);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-primary, #2D3748);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 400;
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 100;
+  letter-spacing: 0.02em;
+}
+.toolbar-btn:hover::after { opacity: 1; }
 
 .toolbar-spacer { flex: 1; }
 
