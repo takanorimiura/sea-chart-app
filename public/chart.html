@@ -1038,8 +1038,12 @@ body.dark-theme .tl-date-cell.weekend {
       <span>原因整理→練習→共感→修復→成熟</span>
     </button>
     <button class="template-btn" onclick="loadTemplate('love_selfcare')">
-      <strong>自分磨き計画</strong>
-      <span>自己肯定→外見→麗度→コーチ→自信</span>
+      <strong>自分磨き計画（秘めフォト連携）</strong>
+      <span>自己肯定→外見→秘めフォト→絶対麗度→自信</span>
+    </button>
+    <button class="template-btn" onclick="loadTemplate('love_himephoto')" style="border-left:3px solid #D4A0C8;">
+      <strong>秘めフォト ステップアップ</strong>
+      <span>初回→プレミアム→シネマ→注文の多い写真館→ウェディング</span>
     </button>
 
     <div id="customTemplates"></div>
@@ -1573,6 +1577,14 @@ NODE_TYPES_BY_CHART.love = {
   date:      { label: 'デート設計',       short: 'D',  color: '#FF6B35', desc: 'デートプランの策定', category: 'action' },
   proposal:  { label: '告白',             short: '告', color: '#EF4444', desc: '想いを伝える', category: 'action' },
   wedding:   { label: '結婚準備',         short: '婚', color: '#F5C542', desc: '結婚に向けた計画', category: 'action' },
+
+  // 📸 秘めフォト・絶対麗度
+  himephoto:     { label: '秘めフォト',           short: '秘',  color: '#D4A0C8', desc: '秘めフォト基本撮影', category: 'himephoto' },
+  himepremium:   { label: '秘めフォトプレミアム', short: '秘P', color: '#C88FBF', desc: '本格的な撮影で魅力を引き出す', category: 'himephoto' },
+  himecinema:    { label: '秘めフォトシネマ',     short: '秘C', color: '#B87EB5', desc: '映画のワンシーンのような撮影', category: 'himephoto' },
+  chumon_photo:  { label: '注文の多い写真館',     short: '注',  color: '#A86DAB', desc: '理想の自分をオーダーメイドで撮影', category: 'himephoto' },
+  himewedding:   { label: '秘めフォトウェディング', short: '秘W', color: '#985CA1', desc: '最高の瞬間を最高の形で残す', category: 'himephoto' },
+  zettai_reido:  { label: '絶対麗度ラボ',         short: '麗',  color: '#E8A0BF', desc: '絶対麗度スコアで美しさを数値化', category: 'himephoto' },
 
   // 📚 書籍
   book_equation: { label: '恋愛成就の方程式', short: '方', color: '#E8A0BF', desc: '全32章', category: 'book' },
@@ -2942,15 +2954,30 @@ var TEMPLATES = {
     ]
   },
   love_selfcare: {
-    name: '自分磨き計画',
+    name: '自分磨き計画（秘めフォト連携）',
     flow: [
       { type: 'current', title: '自分に自信がない', desc: '魅力が足りない気がして、恋愛に踏み出せない' },
       { type: 'self_love', title: '自己肯定感を育てる', desc: '自分の長所を再発見する' },
       { type: 'book_equation', title: '恋愛成就の方程式 第15章', desc: '自分が思っているより、ずっと魅力的だ' },
       { type: 'attraction', title: '外見を磨く', desc: '清潔感・ファッション・体型' },
-      { type: 'note_selfcare', title: '絶対麗度スコア記録', desc: '8次元で現在の自分を数値化' },
-      { type: 'ai_coach', title: '戦略モードで行動計画', desc: '具体的に何を・いつ・どう変えるか' },
-      { type: 'mission', title: '自信を持って恋愛に臨める', desc: '内面と外見の両方が整った状態' },
+      { type: 'himephoto', title: '秘めフォトで自分を知る', desc: '撮影を通じて新しい自分に出会う' },
+      { type: 'zettai_reido', title: '絶対麗度スコア記録', desc: '絶対麗度ラボで美しさを数値化' },
+      { type: 'ai_coach', title: '自分磨きコーチング', desc: 'AIラブコーチと一緒に改善計画' },
+      { type: 'note_selfcare', title: '自分磨き記録', desc: 'LOVE NOTEで変化を可視化' },
+      { type: 'mission', title: '最高の自分になる', desc: '内面×外見の総合的な輝き' },
+    ]
+  },
+  love_himephoto: {
+    name: '秘めフォト ステップアップ',
+    flow: [
+      { type: 'current', title: '自分の魅力がわからない', desc: '写真に撮られるのが苦手、自分に自信がない' },
+      { type: 'himephoto', title: '秘めフォト初回体験', desc: 'まずは基本の秘めフォトで自分を撮る' },
+      { type: 'note_selfcare', title: '撮影の振り返り', desc: '発見した自分の魅力をノートに記録' },
+      { type: 'himepremium', title: '秘めフォトプレミアム', desc: 'より本格的な撮影で魅力を引き出す' },
+      { type: 'himecinema', title: '秘めフォトシネマ', desc: '映画のワンシーンのような自分を撮る' },
+      { type: 'chumon_photo', title: '注文の多い写真館', desc: '理想の自分をオーダーメイドで撮影' },
+      { type: 'himewedding', title: '秘めフォトウェディング', desc: '最高の瞬間を最高の形で残す' },
+      { type: 'mission', title: '自分史上最高の輝き', desc: '写真を通じて自信と魅力を手に入れる' },
     ]
   },
 
@@ -2980,7 +3007,7 @@ function filterTemplatesForSkill(skill) {
     'aihyper': 'read', 'read8': 'read', 'read8tree': 'read',
     'readingnote': 'read', 'mujithinking': 'read',
     'love_roadmap': 'love', 'love_encounter': 'love', 'love_line': 'love',
-    'love_ideal': 'love', 'love_conflict': 'love', 'love_selfcare': 'love',
+    'love_ideal': 'love', 'love_conflict': 'love', 'love_selfcare': 'love', 'love_himephoto': 'love',
     'book': 'ai', 'marketing': 'ai', 'website': 'ai',
   };
 
