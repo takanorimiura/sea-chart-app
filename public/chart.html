@@ -3687,7 +3687,8 @@ async function generateAIFlow() {
         selected_tools: selectedTools,
         minimal_mode: isMinimal,
         chart_type: currentChartType,
-        system_prompt: AI_SYSTEM_PROMPT
+        system_prompt: AI_SYSTEM_PROMPT,
+        user_id: CHART_USER_ID || 'default'
       })
     });
 
