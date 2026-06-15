@@ -1375,6 +1375,58 @@ function skKey(baseKey) {
   return SKILL_PREFIX + baseKey;
 }
 
+// ============================================
+// DB永続化（クロス端末）— localStorage と併設（best-effort）
+// user_id(=Supabase auth UUID) があるときだけ Supabase の sea_chart_projects に同期。
+// URLの ?user_id= で同期取得、親からの postMessage(type:auth) でも受け取る。
+// ============================================
+var CHART_USER_ID = '';
+var CHART_SKILL = '';
+(function() {
+  var p = new URLSearchParams(window.location.search);
+  CHART_USER_ID = p.get('user_id') || '';
+  CHART_SKILL = p.get('skill') || (p.get('skills') || '').split(',')[0] || '';
+})();
+window.addEventListener('message', function(event) {
+  var d = event.data;
+  if (d && d.type === 'auth' && d.user_id) {
+    var changed = (CHART_USER_ID !== String(d.user_id));
+    CHART_USER_ID = String(d.user_id);
+    if (changed) { try { scLoadFromDb(); } catch (e) {} }
+  }
+});
+function scSaveToDb(name, data) {
+  if (!CHART_USER_ID || !name) return;
+  try {
+    fetch('/api/sea-chart/projects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: CHART_USER_ID, skill: CHART_SKILL, name: name, data: data })
+    }).catch(function() {});
+  } catch (e) {}
+}
+function scLoadFromDb() {
+  if (!CHART_USER_ID) return;
+  try {
+    fetch('/api/sea-chart/projects?user_id=' + encodeURIComponent(CHART_USER_ID) + '&skill=' + encodeURIComponent(CHART_SKILL))
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        var rows = (res && res.projects) || [];
+        if (!rows.length) return;
+        var list = getProjectList();
+        rows.forEach(function(row) {
+          var nm = row.name || 'untitled';
+          var key = 'ai_mm_' + nm.replace(/[^a-zA-Z0-9぀-鿿]/g, '_');
+          try { localStorage.setItem(key, JSON.stringify(row.data || {})); } catch (e) {}
+          list[key] = { name: nm, updated: row.updated_at || new Date().toISOString() };
+        });
+        saveProjectList(list);
+        if (typeof renderMyProjects === 'function') renderMyProjects();
+      })
+      .catch(function() {});
+  } catch (e) {}
+}
+
 // localStorage移行: プレフィックス付きデータを統合
 (function() {
   if (!UNIFIED_MODE) return;
@@ -2431,6 +2483,9 @@ function saveProject() {
   var list = getProjectList();
   list[key] = { name: name, updated: new Date().toISOString() };
   saveProjectList(list);
+
+  // DBにも保存（クロス端末・best-effort。失敗してもlocalStorageは保持）
+  scSaveToDb(name, data);
 
   // 後方互換（旧キー）
   localStorage.setItem('ai_mission_map', JSON.stringify(data));
@@ -4912,6 +4967,8 @@ function init() {
   buildPalette();
   renderMyProjects();
   renderCustomTemplates();
+  // DBから自分のプロジェクトを取得して一覧に併合（クロス端末復元）
+  scLoadFromDb();
 
   // Try auto-load from localStorage
   var saved = localStorage.getItem('ai_mission_map');
