@@ -5562,6 +5562,83 @@ init();
   // チュートリアル開始（少し遅延させてキャンバスが描画された後に）
   setTimeout(showTutorial, 800);
 })();
+
+// ============================================
+// 学習データのクラウド同期（テンプレート／選択タイプ）
+// プロジェクト本体は sea_chart_projects で既に同期済み。ここは localStorage 限定
+// だった sea_chart_templates（ユーザー作成テンプレ）等をアカウント(UUID)単位で残す補完。
+// 既存ロジックは非改変・末尾に追加のみ。CHART_USER_ID/renderCustomTemplates を再利用。
+// ============================================
+(function() {
+  function kvTracked(k) {
+    if (!k) return false;
+    if (k === 'sea_chart_templates') return true;               // ユーザー作成テンプレ（全スキル共通）
+    return k.length >= 14 && k.slice(k.length - 14) === 'sea_chart_type'; // 選択タイプ（raw/skill接頭辞とも）
+  }
+  function kvKeys() {
+    var out = [];
+    for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (kvTracked(k)) out.push(k); }
+    return out;
+  }
+  function parse(raw) { if (raw === null) return null; try { return JSON.parse(raw); } catch (e) { return raw; } }
+  var kvSnap = {}, kvStarted = false;
+
+  function kvPush(entries, keepalive) {
+    if (!CHART_USER_ID) return;
+    var has = false; for (var _k in entries) { has = true; break; } if (!has) return;
+    try {
+      fetch('/api/state', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: CHART_USER_ID, entries: entries }), keepalive: !!keepalive
+      }).catch(function() {});
+    } catch (e) {}
+  }
+  function kvSnapshot() { kvSnap = {}; kvKeys().forEach(function(k) { kvSnap[k] = localStorage.getItem(k); }); }
+  function kvPull() {
+    if (!CHART_USER_ID) return;
+    try {
+      fetch('/api/state?user_id=' + encodeURIComponent(CHART_USER_ID), { cache: 'no-store' })
+        .then(function(r) { return r.json(); })
+        .then(function(res) {
+          var server = (res && res.state) || {}, got = false;
+          Object.keys(server).forEach(function(k) {
+            if (!kvTracked(k)) return; var v = server[k]; if (v === null || v === undefined) return;
+            try { localStorage.setItem(k, typeof v === 'string' ? v : JSON.stringify(v)); got = true; } catch (e) {}
+          });
+          // ローカルのみのキー（既存の単一ブラウザ利用者のテンプレ）をサーバーへ吸い上げ
+          var localOnly = {}, any = false;
+          kvKeys().forEach(function(k) { if (Object.prototype.hasOwnProperty.call(server, k)) return; localOnly[k] = parse(localStorage.getItem(k)); any = true; });
+          if (any) kvPush(localOnly);
+          kvSnapshot();
+          if (got && typeof renderCustomTemplates === 'function') { try { renderCustomTemplates(); } catch (e) {} }
+        }).catch(function() {});
+    } catch (e) {}
+  }
+  function kvPushDirty(keepalive) {
+    if (!CHART_USER_ID) return;
+    var entries = {}, seen = {}, any = false;
+    kvKeys().forEach(function(k) {
+      seen[k] = 1; var cur = localStorage.getItem(k);
+      if (cur !== kvSnap[k]) { entries[k] = parse(cur); kvSnap[k] = cur; any = true; }
+    });
+    Object.keys(kvSnap).forEach(function(k) { if (!seen[k] && kvSnap[k] !== null) { entries[k] = null; kvSnap[k] = null; any = true; } });
+    if (any) kvPush(entries, keepalive);
+  }
+  function kvStart() {
+    if (!CHART_USER_ID) return;
+    kvPull();
+    if (kvStarted) return; kvStarted = true;
+    setInterval(function() { kvPushDirty(false); }, 5000);
+    var flush = function() { kvPushDirty(true); };
+    document.addEventListener('visibilitychange', function() { if (document.visibilityState === 'hidden') flush(); });
+    window.addEventListener('pagehide', flush);
+    window.addEventListener('beforeunload', flush);
+  }
+  if (CHART_USER_ID) kvStart();
+  window.addEventListener('message', function(event) {
+    var d = event.data; if (d && d.type === 'auth' && d.user_id) { setTimeout(kvStart, 0); }
+  });
+})();
 </script>
 </body>
 </html>
